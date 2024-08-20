@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "36286418571",
+    "project_id": "spm-app-e91be",
+    "storage_bucket": "spm-app-e91be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36286418571:android:885e7ed4f4cf9e687bce8e",
+        "android_client_info": {
+          "package_name": "com.example.spm_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8o_2E2GJaoc0uShoyiJpwWGmdY_ZT0RQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

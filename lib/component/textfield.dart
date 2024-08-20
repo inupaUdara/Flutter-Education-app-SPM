@@ -1,0 +1,52 @@
+import 'package:flutter/material.dart';
+
+class CustomTextField extends StatelessWidget {
+  final String hintText;
+  final bool obscureText;
+  final TextEditingController controller;
+  final Color borderColor; // Color for the border
+  final Color textColor; // Color for the text
+  final Color hintColor; // Color for the hint text
+  final Color focusedBorderColor; // Color for the focused border
+  final Color enabledBorderColor; // Color for the enabled border
+
+  const CustomTextField({
+    super.key,
+    required this.hintText,
+    required this.obscureText,
+    required this.controller,
+    this.borderColor = Colors.grey, // Default border color
+    this.textColor = Colors.black, // Default text color
+    this.hintColor = Colors.grey, // Default hint color
+    this.focusedBorderColor = Colors.blue, // Default focused border color
+    this.enabledBorderColor = Colors.grey, // Default enabled border color
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      style: TextStyle(color: textColor), // Text color
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: TextStyle(color: hintColor), // Hint text color
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+              BorderSide(color: enabledBorderColor), // Enabled border color
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+              BorderSide(color: focusedBorderColor), // Focused border color
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+              BorderSide(color: enabledBorderColor), // Enabled border color
+        ),
+      ),
+    );
+  }
+}
