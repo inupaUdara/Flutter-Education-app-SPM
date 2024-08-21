@@ -74,9 +74,9 @@ class _LoginPageState extends State<LoginPage> {
         email: email,
         password: password,
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Login successful")),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text("Login successful")),
+      // );
 
       // Navigate to ProfilePage upon successful login
       Navigator.of(context).pushReplacement(
@@ -99,17 +99,12 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.person,
-                  size: 80,
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                ),
                 const SizedBox(
                   height: 25,
                 ),
                 const Text(
-                  "LOGIN",
-                  style: TextStyle(fontSize: 20),
+                  "Login",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 50,
@@ -151,9 +146,15 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 const SizedBox(
-                  height: 25,
+                  height: 15,
                 ),
-                const SizedBox(height: 25),
+                Text(
+                  "Or",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+                const SizedBox(height: 15),
                 CustomButton(
                   text: "Login with Fingerprint",
                   ontap: () async {

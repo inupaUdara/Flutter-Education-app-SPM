@@ -17,7 +17,7 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     this.borderColor = Colors.grey, // Default border color
     this.textColor = Colors.black, // Default text color
-    this.hintColor = Colors.grey, // Default hint color
+    this.hintColor = const Color(0xFF1F276F), // Default hint color
     this.focusedBorderColor = Colors.blue, // Default focused border color
     this.enabledBorderColor = Colors.grey, // Default enabled border color
   });
@@ -27,14 +27,16 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
+      cursorColor: Colors.black,
       style: TextStyle(color: textColor), // Text color
       decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
         hintText: hintText,
         hintStyle: TextStyle(color: hintColor), // Hint text color
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide:
-              BorderSide(color: enabledBorderColor), // Enabled border color
+          borderSide: BorderSide(color: Colors.white), // Enabled border color
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -44,7 +46,7 @@ class CustomTextField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide:
-              BorderSide(color: enabledBorderColor), // Enabled border color
+              BorderSide(color: Color(0xFFC1E3FD)), // Enabled border color
         ),
       ),
     );

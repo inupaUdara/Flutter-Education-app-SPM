@@ -109,17 +109,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 25.0),
-                child: ListTile(
-                  leading: Icon(
-                    _speechToText.isListening ? Icons.mic : Icons.mic_none,
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                  ),
-                  title: const Text("VOICE COMMAND"),
-                  onTap: _speechEnabled ? _startListening : _stopListening,
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 25.0),
+              //   child: ListTile(
+              //     leading: Icon(
+              //       _speechToText.isListening ? Icons.mic : Icons.mic_none,
+              //       color: Theme.of(context).colorScheme.inversePrimary,
+              //     ),
+              //     title: const Text("VOICE COMMAND"),
+              //     onTap: _speechEnabled ? _startListening : _stopListening,
+              //   ),
+              // ),
             ],
           ),
         ],

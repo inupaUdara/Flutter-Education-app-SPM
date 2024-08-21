@@ -107,9 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (context.mounted) {
         Future.delayed(Duration.zero, () {
           Navigator.pop(context); // Close loading dialog
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Registration successful")),
-          );
+          displayMessageToUser("Registration successful", context);
         });
       }
     } on FirebaseAuthException catch (e) {
@@ -145,17 +143,12 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.person,
-                  size: 80,
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                ),
                 const SizedBox(
                   height: 25,
                 ),
                 const Text(
                   "Register",
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 25,
@@ -188,13 +181,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: "Confirm Password",
                   obscureText: true,
                   controller: confirmPwController,
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                CustomButton(
-                  text: "Register",
-                  ontap: register,
                 ),
                 const SizedBox(
                   height: 25,

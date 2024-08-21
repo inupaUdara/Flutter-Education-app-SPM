@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:spm_project/auth/loginOrRegister.dart';
 import 'package:spm_project/component/button.dart';
 import 'package:spm_project/component/textfield.dart';
+import 'package:spm_project/component/voice.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,6 +16,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final User? currentUser = FirebaseAuth.instance.currentUser;
+  final _storage = const FlutterSecureStorage();
 
   Future<void> logout(BuildContext context) async {
     try {
@@ -40,6 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
           .collection("Users")
           .doc(currentUser!.email)
           .update({"username": username});
+      await _storage.write(key: "username", value: username);
     } catch (e) {
       print(e.toString());
     }
@@ -57,17 +61,16 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
 
-      FirebaseAuth.instance.authStateChanges().listen((user) async {
-        if (user != null && user.emailVerified) {
-          await FirebaseFirestore.instance
-              .collection("Users")
-              .doc(user.email)
-              .update({"email": user.email});
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Email updated successfully!")),
-          );
-        }
-      });
+      // Update the secure storage with the new email (temporary, before verification)
+      await _storage.write(key: "newEmail", value: newEmail);
+
+      // Inform the user to return to the app after verifying
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "Please return to the app after verifying your new email to complete the update."),
+        ),
+      );
     } catch (e) {
       print(e.toString());
       ScaffoldMessenger.of(context).showSnackBar(
@@ -76,9 +79,50 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Future<void> updateEmailInFirestore(BuildContext context) async {
+    try {
+      final String? newEmail = await _storage.read(key: "newEmail");
+
+      if (newEmail != null &&
+          currentUser != null &&
+          currentUser!.emailVerified) {
+        await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(currentUser!.email)
+            .update({"email": newEmail});
+
+        await _storage.write(key: "email", value: newEmail);
+        await _storage.delete(key: "newEmail");
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Email updated successfully!")),
+        );
+      }
+    } catch (e) {
+      print(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content:
+                Text("Failed to update email in Firestore: ${e.toString()}")),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    FirebaseAuth.instance.authStateChanges().listen((user) async {
+      if (user != null && user.emailVerified) {
+        await updateEmailInFirestore(context);
+      }
+    });
+  }
+
   Future<void> updatePassword(String newPassword) async {
     try {
       await currentUser!.updatePassword(newPassword);
+      await _storage.write(key: "password", value: newPassword);
     } catch (e) {
       print(e.toString());
     }
@@ -146,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(24),
                         ),
                         padding: const EdgeInsets.all(25),
@@ -207,6 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           style: TextStyle(color: Colors.redAccent),
                         ),
                       ),
+                      SpeechButton()
                     ],
                   ),
                 ),

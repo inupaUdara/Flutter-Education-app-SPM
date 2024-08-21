@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:spm_project/component/drawer.dart';
+import 'package:spm_project/component/voice.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -18,6 +19,7 @@ class HomePage extends StatelessWidget {
         // iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
       ),
       drawer: CustomDrawer(),
+      body: SpeechButton(),
     );
   }
 }
