@@ -68,7 +68,7 @@ class _SpeechButtonState extends State<SpeechButton> {
   void _navigateBasedOnCommand(String command) async {
     if (command.contains('home')) {
       Navigator.pushNamed(context, '/home_page');
-      _speak("Navigating to Home Page");
+      // _speak("Navigating to Home Page");
     } else if (command.contains('profile')) {
       Navigator.pushNamed(context, '/profile_page');
       _speak("Navigating to Profile Page");

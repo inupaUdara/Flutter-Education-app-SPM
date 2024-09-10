@@ -52,8 +52,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> verifyAndUpdateEmail(
       String newEmail, BuildContext context) async {
     try {
+      // Send verification email before updating
       await currentUser!.verifyBeforeUpdateEmail(newEmail);
 
+      // Show message about verification
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -61,27 +63,41 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
 
-      // Update the secure storage with the new email (temporary, before verification)
+      // Temporarily store the new email before verification
       await _storage.write(key: "newEmail", value: newEmail);
 
-      // Inform the user to return to the app after verifying
+      // Inform user to return after verifying
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
               "Please return to the app after verifying your new email to complete the update."),
         ),
       );
+      FirebaseAuth.instance.authStateChanges().listen((user) async {
+        if (user != null) {
+          // Reload the user to ensure the latest status (email verification)
+          await user.reload();
+          if (user.emailVerified) {
+            // Update the email in Firestore after email verification
+            await updateEmailInFirestore(context);
+          }
+        }
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Email updated successfully in Firestore!")),
+      );
     } catch (e) {
       print(e.toString());
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to update email: ${e.toString()}")),
+        SnackBar(content: Text("Failed to send verification: ${e.toString()}")),
       );
     }
   }
 
   Future<void> updateEmailInFirestore(BuildContext context) async {
     try {
-      // Refresh the current user data to ensure emailVerified is up to date
+      // Reload the current user to ensure emailVerified is updated
       await currentUser!.reload();
       User? updatedUser = FirebaseAuth.instance.currentUser;
 
@@ -93,10 +109,10 @@ class _ProfilePageState extends State<ProfilePage> {
           // Update the email in Firestore
           await FirebaseFirestore.instance
               .collection("Users")
-              .doc(updatedUser.email)
+              .doc(currentUser!.email)
               .update({"email": newEmail});
 
-          // Update the secure storage with the new email and clean up
+          // Update the email in secure storage
           await _storage.write(key: "email", value: newEmail);
           await _storage.delete(key: "newEmail");
 
@@ -122,15 +138,16 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
 
-    FirebaseAuth.instance.authStateChanges().listen((user) async {
-      if (user != null) {
-        // Reload the user to ensure the latest status
-        await user.reload();
-        if (user.emailVerified) {
-          await updateEmailInFirestore(context);
-        }
-      }
-    });
+    // FirebaseAuth.instance.authStateChanges().listen((user) async {
+    //   if (user != null) {
+    //     // Reload the user to ensure the latest status (email verification)
+    //     await user.reload();
+    //     if (user.emailVerified) {
+    //       // Update the email in Firestore after email verification
+    //       await updateEmailInFirestore(context);
+    //     }
+    //   }
+    // });
   }
 
   Future<void> updatePassword(String newPassword) async {
