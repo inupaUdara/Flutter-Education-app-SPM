@@ -81,29 +81,39 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> updateEmailInFirestore(BuildContext context) async {
     try {
-      final String? newEmail = await _storage.read(key: "newEmail");
+      // Refresh the current user data to ensure emailVerified is up to date
+      await currentUser!.reload();
+      User? updatedUser = FirebaseAuth.instance.currentUser;
 
-      if (newEmail != null &&
-          currentUser != null &&
-          currentUser!.emailVerified) {
-        await FirebaseFirestore.instance
-            .collection("Users")
-            .doc(currentUser!.email)
-            .update({"email": newEmail});
+      // Check if the email has been verified
+      if (updatedUser != null && updatedUser.emailVerified) {
+        final String? newEmail = await _storage.read(key: "newEmail");
 
-        await _storage.write(key: "email", value: newEmail);
-        await _storage.delete(key: "newEmail");
+        if (newEmail != null) {
+          // Update the email in Firestore
+          await FirebaseFirestore.instance
+              .collection("Users")
+              .doc(updatedUser.email)
+              .update({"email": newEmail});
 
+          // Update the secure storage with the new email and clean up
+          await _storage.write(key: "email", value: newEmail);
+          await _storage.delete(key: "newEmail");
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text("Email updated successfully in Firestore!")),
+          );
+        }
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Email updated successfully!")),
+          const SnackBar(content: Text("Email is not verified yet!")),
         );
       }
     } catch (e) {
-      print(e.toString());
+      print("Failed to update email in Firestore: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content:
-                Text("Failed to update email in Firestore: ${e.toString()}")),
+        SnackBar(content: Text("Failed to update email in Firestore: $e")),
       );
     }
   }
@@ -113,8 +123,12 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
 
     FirebaseAuth.instance.authStateChanges().listen((user) async {
-      if (user != null && user.emailVerified) {
-        await updateEmailInFirestore(context);
+      if (user != null) {
+        // Reload the user to ensure the latest status
+        await user.reload();
+        if (user.emailVerified) {
+          await updateEmailInFirestore(context);
+        }
       }
     });
   }

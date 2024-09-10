@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:spm_project/auth/auth.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
@@ -20,8 +21,14 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
   SpeechToText _speechToText = SpeechToText();
+  FlutterTts _flutterTts = FlutterTts();
   bool _speechEnabled = false;
   String _command = '';
+
+  List<Map> _voices = [];
+  Map? _currentVoice;
+
+  int? _currentWordStart, _currentWordEnd;
 
   @override
   void initState() {
@@ -56,13 +63,42 @@ class _CustomDrawerState extends State<CustomDrawer> {
   void _navigateBasedOnCommand(String command) {
     if (command.contains('home')) {
       Navigator.pushNamed(context, '/home_page');
+      _speak("Navigating to Home Page");
     } else if (command.contains('profile')) {
       Navigator.pushNamed(context, '/profile_page');
+      _speak("Navigating to Profile Page");
     } else if (command.contains('logout')) {
       widget.logout(context);
+      _speak("Logging out");
+    } else {
+      _speak("Command not recognized");
     }
 
     print(_command);
+  }
+
+  void _speak(String text) async {
+    if (text.isNotEmpty) {
+      // Stop any previous speech
+      await _flutterTts.stop();
+
+      // Optionally set other properties before speaking
+      await _flutterTts.setLanguage("en-US");
+      await _flutterTts.setSpeechRate(0.5); // Speed control
+      await _flutterTts.setVolume(1.0); // Volume control
+      await _flutterTts.setPitch(1.0); // Pitch control
+
+      // Speak the text
+      int result = await _flutterTts.speak(text);
+
+      if (result == 1) {
+        print("Speech started");
+      } else {
+        print("Speech failed");
+      }
+    } else {
+      print("No text to speak");
+    }
   }
 
   @override
