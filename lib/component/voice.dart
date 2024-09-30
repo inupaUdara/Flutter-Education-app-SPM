@@ -69,6 +69,18 @@ class _SpeechButtonState extends State<SpeechButton> {
     if (command.contains('home')) {
       Navigator.pushNamed(context, '/home_page');
       // _speak("Navigating to Home Page");
+    } else if (command.contains('math')) {
+      Navigator.pushNamed(context, '/maths_obj');
+      _speak("Navigating to Maths Object Page");
+    } else if (command.contains('science')) {
+      Navigator.pushNamed(context, '/science_obj');
+      _speak("Navigating to Science Object Page");
+    } else if (command.contains('currency')) {
+      Navigator.pushNamed(context, '/currancy_obj');
+      _speak("Navigating to Currency Object Page");
+    } else if (command.contains('save')) {
+      Navigator.pushNamed(context, '/display_shape_obj');
+      _speak("Navigating to Object Save Page");
     } else if (command.contains('profile')) {
       Navigator.pushNamed(context, '/profile_page');
       _speak("Navigating to Profile Page");

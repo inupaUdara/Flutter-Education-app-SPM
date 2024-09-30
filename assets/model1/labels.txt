@@ -1,0 +1,4 @@
+0 circle
+1 rectangle
+2 square
+3 triangle

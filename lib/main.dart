@@ -4,6 +4,10 @@ import 'package:spm_project/auth/auth.dart';
 import 'package:spm_project/auth/loginOrRegister.dart';
 import 'package:spm_project/firebase_options.dart';
 import 'package:spm_project/pages/home.dart';
+import 'package:spm_project/pages/objects_detection/currency_obj.dart';
+import 'package:spm_project/pages/objects_detection/display_shape.dart';
+import 'package:spm_project/pages/objects_detection/math_object.dart';
+import 'package:spm_project/pages/objects_detection/science_obj.dart';
 import 'package:spm_project/pages/profile.dart';
 import 'package:spm_project/theme/colors.dart';
 
@@ -26,6 +30,10 @@ class MyApp extends StatelessWidget {
         '/login_register_page': (context) => const LoginOrRegister(),
         '/home_page': (context) => const HomePage(),
         '/profile_page': (context) => const ProfilePage(),
+        '/maths_obj': (context) => const MathsObj(),
+        '/science_obj': (context) => const ScienceObj(),
+        '/currancy_obj': (context) => const CurrancyObj(),
+        '/display_shape_obj': (context) => const DisplayShapes(),
       },
     );
   }
