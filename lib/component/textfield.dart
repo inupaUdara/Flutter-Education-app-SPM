@@ -36,7 +36,8 @@ class CustomTextField extends StatelessWidget {
         hintStyle: TextStyle(color: hintColor), // Hint text color
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.white), // Enabled border color
+          borderSide:
+              const BorderSide(color: Colors.white), // Enabled border color
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -45,8 +46,8 @@ class CustomTextField extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide:
-              BorderSide(color: Color(0xFFC1E3FD)), // Enabled border color
+          borderSide: const BorderSide(
+              color: Color(0xFFC1E3FD)), // Enabled border color
         ),
       ),
     );

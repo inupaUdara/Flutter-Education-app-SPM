@@ -170,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
       await FirebaseAuth.instance.signOut();
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginOrRegister()),
+        MaterialPageRoute(builder: (context) => const LoginOrRegister()),
       );
     } catch (e) {
       print(e.toString());
@@ -198,7 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         future: getUserdetails(),
         builder: (context, snapshot) {
@@ -276,13 +276,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: ElevatedButton.styleFrom(
                             elevation: 0,
                             backgroundColor:
-                                Theme.of(context).colorScheme.background),
+                                Theme.of(context).colorScheme.surface),
                         child: const Text(
                           "Delete Profile",
                           style: TextStyle(color: Colors.redAccent),
                         ),
                       ),
-                      SpeechButton()
+                      const SpeechButton()
                     ],
                   ),
                 ),

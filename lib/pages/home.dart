@@ -66,8 +66,8 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         // iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
       ),
-      drawer: CustomDrawer(),
-      body: SpeechButton(),
+      drawer: const CustomDrawer(),
+      body: const SpeechButton(),
     );
   }
 }

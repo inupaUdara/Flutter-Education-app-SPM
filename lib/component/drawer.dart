@@ -20,12 +20,12 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  SpeechToText _speechToText = SpeechToText();
-  FlutterTts _flutterTts = FlutterTts();
+  final SpeechToText _speechToText = SpeechToText();
+  final FlutterTts _flutterTts = FlutterTts();
   bool _speechEnabled = false;
   String _command = '';
 
-  List<Map> _voices = [];
+  final List<Map> _voices = [];
   Map? _currentVoice;
 
   int? _currentWordStart, _currentWordEnd;
@@ -104,7 +104,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -139,7 +139,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     Icons.person,
                     color: Theme.of(context).colorScheme.inversePrimary,
                   ),
-                  title: Text("PROFILE"),
+                  title: const Text("PROFILE"),
                   onTap: () {
                     Navigator.pushNamed(context, '/profile_page');
                   },

@@ -25,7 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController confirmPwController = TextEditingController();
 
   final LocalAuthentication auth = LocalAuthentication();
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   bool _isBiometricAvailable = false;
 
   @override
@@ -135,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(25.0),
@@ -208,7 +208,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     GestureDetector(
                       onTap: widget.ontap,
-                      child: Text(
+                      child: const Text(
                         " Login here",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,

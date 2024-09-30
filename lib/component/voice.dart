@@ -13,8 +13,8 @@ class SpeechButton extends StatefulWidget {
 }
 
 class _SpeechButtonState extends State<SpeechButton> {
-  SpeechToText _speechToText = SpeechToText();
-  FlutterTts _flutterTts = FlutterTts();
+  final SpeechToText _speechToText = SpeechToText();
+  final FlutterTts _flutterTts = FlutterTts();
   bool _speechEnabled = false;
   bool _isListning = false;
   String _command = '';
@@ -51,7 +51,7 @@ class _SpeechButtonState extends State<SpeechButton> {
       _isListning = true;
     });
 
-    _timer = Timer(Duration(seconds: 10), _stopListening);
+    _timer = Timer(const Duration(seconds: 10), _stopListening);
   }
 
   void _stopListening() async {
@@ -133,7 +133,7 @@ class _SpeechButtonState extends State<SpeechButton> {
                       elevation: 0,
                       onPressed: _stopListening,
                       backgroundColor: Colors.red,
-                      child: Icon(
+                      child: const Icon(
                         Icons.stop,
                         color: Colors.white,
                       ),

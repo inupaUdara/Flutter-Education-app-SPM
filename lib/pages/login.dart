@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController passwordController = TextEditingController();
 
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   final LocalAuthentication auth = LocalAuthentication();
 
   Future<void> authenticateWithBiometrics() async {
@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
 
       // Navigate to ProfilePage upon successful login
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(25.0),
@@ -175,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     GestureDetector(
                       onTap: widget.onTap,
-                      child: Text(
+                      child: const Text(
                         " Register Here",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
