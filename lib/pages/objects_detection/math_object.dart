@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
-import 'package:spm_project/component/button.dart';
 import 'dart:developer' as devtools;
+import 'package:spm_project/component/button.dart';
 import 'package:spm_project/helper/camera_helper.dart';
+import '../ai_explain/ChatScreen.dart'; // Import the ChatScreen to navigate to it
 
 class MathsObj extends StatefulWidget {
   const MathsObj({super.key});
@@ -57,7 +57,6 @@ class _MathsObjState extends State<MathsObj> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _cameraHelper.disposeCamera();
     Tflite.close();
     super.dispose();
@@ -73,6 +72,23 @@ class _MathsObjState extends State<MathsObj> {
     setState(() {
       label = newLabel;
     });
+  }
+
+  void _navigateToChatScreen() {
+    // Navigate to the ChatScreen and pass the detected object (label)
+    if (label.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatScreen(identifiedObject: label),
+        ),
+      );
+    } else {
+      // If no object is detected, show a message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No object detected yet!')),
+      );
+    }
   }
 
   @override
@@ -123,8 +139,11 @@ class _MathsObjState extends State<MathsObj> {
                   await _ensureModelIsLoaded();
                   await _cameraHelper.captureImage(
                       _updateImageFile, _updateLabel);
+
+                  // Navigate to ChatScreen after object is detected
+                  _navigateToChatScreen();
                 },
-                text: "Capture",
+                text: "Capture and Identify",
               ),
             ],
           ),
