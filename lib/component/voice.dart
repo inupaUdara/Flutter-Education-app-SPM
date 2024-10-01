@@ -92,6 +92,9 @@ class _SpeechButtonState extends State<SpeechButton> {
     } else if (command.contains('capture')) {
       widget.onCaptureCommand();
       _speak("Capturing the image");
+    } else if (command.contains('help')) {
+      Navigator.pushNamed(context, '/help_page');
+      _speak("Navigating to Help Page");
     }
     print(_command);
   }
