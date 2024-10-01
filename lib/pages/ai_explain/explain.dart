@@ -136,18 +136,18 @@ class _ExplainPageState extends State<ExplainPage> {
       _confidenceLevel = result.confidence;
     });
 
-       // Check if the user wants to go to specific pages
-  String spokenWords = _wordsSpoken.toLowerCase();
+    // Check if the user wants to go to specific pages
+    String spokenWords = _wordsSpoken.toLowerCase();
 
-  if (spokenWords.contains("go to home")) {
-    Navigator.pushReplacementNamed(context, '/home_page');
-  } else if (spokenWords.contains("go to maths object")) {
-    Navigator.pushReplacementNamed(context, '/maths_obj');
-  } else if (spokenWords.contains("go to science object")) {
-    Navigator.pushReplacementNamed(context, '/science_obj');
-  } else if (spokenWords.contains("go to currency")) {
-    Navigator.pushReplacementNamed(context, '/currancy_obj');
-  }
+    if (spokenWords.contains("go to home")) {
+      Navigator.pushReplacementNamed(context, '/home_page');
+    } else if (spokenWords.contains("go to maths object")) {
+      Navigator.pushReplacementNamed(context, '/maths_obj');
+    } else if (spokenWords.contains("go to science object")) {
+      Navigator.pushReplacementNamed(context, '/science_obj');
+    } else if (spokenWords.contains("go to currency")) {
+      Navigator.pushReplacementNamed(context, '/currancy_obj');
+    }
 
     _flutterTts.setCompletionHandler(() {
       setState(() {
@@ -158,15 +158,15 @@ class _ExplainPageState extends State<ExplainPage> {
 
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
-   appBar: AppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(
-    'Ask More',
-    style: TextStyle(color: Colors.white), // Set the text color to white
-  ),
-         // Show the identified object at the top
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        
+          'Ask More',
+          style: TextStyle(color: Colors.black), // Set the text color to white
+        ),
+        // Show the identified object at the top
+        backgroundColor: Colors.transparent,
+
         actions: [
           TextButton(
             onPressed: () {
@@ -177,110 +177,121 @@ class _ExplainPageState extends State<ExplainPage> {
             },
             child: Text(
               "Chat history",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
           ),
         ],
       ),
-    backgroundColor: Colors.white, // Set the background color of the Scaffold
-    body: Column(
-      children: [
-        // Top half of the screen: text input and buttons
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                // Wrap the response text in a Flexible widget to avoid overflow
-                if (responseText.isNotEmpty)
-                  Flexible(
-                    child: SingleChildScrollView(
-                      child: Text(
-                        '$responseText',
-                        style: TextStyle(fontSize: 16, color: Colors.black87), // Text color
+      backgroundColor: Colors.white, // Set the background color of the Scaffold
+      body: Column(
+        children: [
+          // Top half of the screen: text input and buttons
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  // Wrap the response text in a Flexible widget to avoid overflow
+                  if (responseText.isNotEmpty)
+                    Flexible(
+                      child: SingleChildScrollView(
+                        child: Text(
+                          '$responseText',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87), // Text color
+                        ),
+                      ),
+                    ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _questionController,
+                    style: TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      labelText: 'Ask a question...',
+                      border: OutlineInputBorder(),
+                      labelStyle: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary), // Label text color
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Visibility(
+                    visible:
+                        !isLoading, // Hide the button when isLoading is true
+                    child: ElevatedButton(
+                      onPressed: () =>
+                          askMoreQuestions(_questionController.text),
+                      child: Text('Submit',
+                          style: TextStyle(color: Colors.white)), // Text color
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .primary, // Button background color
                       ),
                     ),
                   ),
-                SizedBox(height: 20),
-                TextField(
-                  controller: _questionController,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    labelText: 'Ask a question...',
-                    border: OutlineInputBorder(),
-                    labelStyle: TextStyle(color: const Color.fromARGB(255, 0, 53, 145)), // Label text color
-                    
-                  ),
-                ),
-                SizedBox(height: 10),
-                Visibility(
-  visible: !isLoading, // Hide the button when isLoading is true
-  child: ElevatedButton(
-    onPressed: () => askMoreQuestions(_questionController.text),
-    child: Text('Submit', style: TextStyle(color: Colors.white)), // Text color
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Theme.of(context).colorScheme.primary,// Button background color
-    ),
-  ),
-),
-              ],
-            ),
-          ),
-        ),
-        // Bottom half of the screen: Gesture area for voice input
-        Expanded(
-          flex: 1,
-          child: GestureDetector(
-            onLongPress: () {
-              _flutterTts.stop(); // Stop the speech output
-              _startListening(); // Start listening for user input
-              setState(() {
-                _isListening = true; // Listening animation starts
-                _isSpeaking = false; // Ensure no speaking animation is active
-              });
-            },
-            onLongPressUp: () {
-              _stopListening();
-              setState(() {
-                _isListening = false;
-              });
-            },
-            child: Container(
-              width: double.infinity,
-              color: Colors.white, // Container background color
-              child: Center(
-                child: isLoading
-                    ? Lottie.network(
-                        'https://lottie.host/cc40834c-0b0e-4758-827e-06de2767ade5/2pNpN1FN8o.json', // Loading animation
-                        width: 200,
-                        height: 200,
-                      )
-                    : _isListening
-                        ? Lottie.network(
-                            'https://lottie.host/d6546831-1930-48d4-9e82-70fa2aeca5f9/8kIDv5qgMv.json', // Listening animation
-                            width: 300,
-                            height: 300,
-                          )
-                        : (_isSpeaking
-                            ? Lottie.network(
-                                'https://lottie.host/0e504c43-7dae-4143-8ec4-622d1343fd4b/R88atFfg7q.json', // Speaking animation
-                                width: 400,
-                                height: 400,
-                              )
-                            : Icon(
-                                Icons.mic_none,
-                                size: 80,
-                                color: const Color.fromARGB(255, 1, 197, 24), // Icon color
-                              )),
+                ],
               ),
             ),
           ),
-        ),
-      ],
-    ),
-    floatingActionButton: _buildFloatingActionButtons(),
-  );
-}
+          // Bottom half of the screen: Gesture area for voice input
+          Expanded(
+            flex: 1,
+            child: GestureDetector(
+              onLongPress: () {
+                _flutterTts.stop(); // Stop the speech output
+                _startListening(); // Start listening for user input
+                setState(() {
+                  _isListening = true; // Listening animation starts
+                  _isSpeaking = false; // Ensure no speaking animation is active
+                });
+              },
+              onLongPressUp: () {
+                _stopListening();
+                setState(() {
+                  _isListening = false;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                color: Colors.white, // Container background color
+                child: Center(
+                  child: isLoading
+                      ? Lottie.network(
+                          'https://lottie.host/cc40834c-0b0e-4758-827e-06de2767ade5/2pNpN1FN8o.json', // Loading animation
+                          width: 200,
+                          height: 200,
+                        )
+                      : _isListening
+                          ? Lottie.network(
+                              'https://lottie.host/d6546831-1930-48d4-9e82-70fa2aeca5f9/8kIDv5qgMv.json', // Listening animation
+                              width: 300,
+                              height: 300,
+                            )
+                          : (_isSpeaking
+                              ? Lottie.network(
+                                  'https://lottie.host/0e504c43-7dae-4143-8ec4-622d1343fd4b/R88atFfg7q.json', // Speaking animation
+                                  width: 400,
+                                  height: 400,
+                                )
+                              : Icon(
+                                  Icons.mic_none,
+                                  size: 80,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary, // Icon color
+                                )),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: _buildFloatingActionButtons(),
+    );
+  }
 
   Widget _buildFloatingActionButtons() {
     return Row(
@@ -290,7 +301,8 @@ class _ExplainPageState extends State<ExplainPage> {
         if (responseText.isNotEmpty)
           FloatingActionButton(
             onPressed: () => _flutterTts.speak(responseText),
-            backgroundColor: Colors.blueAccent, // Set background color
+            backgroundColor:
+                Theme.of(context).colorScheme.primary, // Set background color
             foregroundColor: Colors.white, // Icon color
             child: Icon(Icons.replay),
           ),

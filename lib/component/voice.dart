@@ -18,7 +18,7 @@ class _SpeechButtonState extends State<SpeechButton> {
   final SpeechToText _speechToText = SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();
   bool _speechEnabled = false;
-  bool _isListning = false;
+  bool _isListening = false;
   String _command = '';
   Timer? _timer;
 
@@ -50,7 +50,7 @@ class _SpeechButtonState extends State<SpeechButton> {
     });
     setState(() {
       _speechEnabled = true;
-      _isListning = true;
+      _isListening = true;
     });
 
     _timer = Timer(const Duration(seconds: 10), _stopListening);
@@ -59,57 +59,70 @@ class _SpeechButtonState extends State<SpeechButton> {
   void _stopListening() async {
     if (_timer != null && _timer!.isActive) {
       _timer!.cancel();
+      // _speak("Unrecognized command, please try again");
     }
     await _speechToText.stop();
     setState(() {
       _speechEnabled = false;
-      _isListning = false;
+      _isListening = false;
     });
   }
 
   void _navigateBasedOnCommand(String command) async {
     if (command.contains('home')) {
       Navigator.pushNamed(context, '/home_page');
-      // _speak("Navigating to Home Page");
+      _speak("Navigating to Home Page");
+      _stopListening(); // Stop after correct command
     } else if (command.contains('mathematics')) {
       Navigator.pushNamed(context, '/maths_obj');
       _speak("Navigating to Maths Object Page");
+      _stopListening(); // Stop after correct command
     } else if (command.contains('science')) {
       Navigator.pushNamed(context, '/science_obj');
       _speak("Navigating to Science Object Page");
+      _stopListening(); // Stop after correct command
     } else if (command.contains('currency')) {
       Navigator.pushNamed(context, '/currancy_obj');
       _speak("Navigating to Currency Object Page");
+      _stopListening(); // Stop after correct command
     } else if (command.contains('save')) {
       Navigator.pushNamed(context, '/display_shape_obj');
       _speak("Navigating to Object Save Page");
+      _stopListening(); // Stop after correct command
     } else if (command.contains('profile')) {
       Navigator.pushNamed(context, '/profile_page');
       _speak("Navigating to Profile Page");
+      _stopListening(); // Stop after correct command
     } else if (command.contains('logout')) {
       logout(context);
       _speak("Logging out");
+      _stopListening(); // Stop after correct command
     } else if (command.contains('quiz')) {
       Navigator.pushNamed(context, '/quiz_page');
       _speak("Navigating to Quiz Page");
+      _stopListening(); // Stop after correct command
     } else if (command.contains('voice note')) {
       Navigator.pushNamed(context, '/voice_note_page');
       _speak("Navigating to voice note Page");
+      _stopListening(); // Stop after correct command
     } else if (command.contains('capture')) {
       widget.onCaptureCommand();
       _speak("Capturing the image");
+      _stopListening(); // Stop after correct command
     } else if (command.contains('help')) {
       Navigator.pushNamed(context, '/help_page');
       _speak("Navigating to Help Page");
+      // Stop after correct command
+    } else {
+      // _speak("Unrecognized command, please try again");
+      _stopListening(); // Restart listening for the correct command
     }
-
-    print(_command);
   }
 
   void _speak(String text) async {
     if (text.isNotEmpty) {
       // Stop any previous speech
-      await _flutterTts.stop();
+      // await _flutterTts.stop();
 
       // Optionally set other properties before speaking
       await _flutterTts.setLanguage("en-US");
@@ -132,28 +145,43 @@ class _SpeechButtonState extends State<SpeechButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SafeArea(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.end, // Button stays at the bottom
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: FloatingActionButton(
-                    elevation: 0,
-                    onPressed: _startListening,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    child: Icon(
-                      _speechToText.isListening ? Icons.mic : Icons.mic_none,
-                      color: Colors.white,
+                Expanded(
+                  child: GestureDetector(
+                    onTap: _startListening,
+                    child: Container(
+                      height: 60, // Make it large
+                      color: Colors
+                          .transparent, // Ensure the full area is tappable
+                      child: FloatingActionButton.extended(
+                        elevation: 0,
+                        onPressed: _startListening,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        label: Text(
+                          _speechToText.isListening
+                              ? "Listening..."
+                              : "Tap to Speak",
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        icon: Icon(
+                          _speechToText.isListening
+                              ? Icons.mic
+                              : Icons.mic_none,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                if (_isListning)
+                if (_isListening)
                   Padding(
                     padding: const EdgeInsets.all(25.0),
                     child: FloatingActionButton(
@@ -168,7 +196,7 @@ class _SpeechButtonState extends State<SpeechButton> {
                   ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

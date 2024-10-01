@@ -4,7 +4,8 @@ import 'ChatScreen.dart';
 
 class SetIdentifiedObjectPage extends StatefulWidget {
   @override
-  _SetIdentifiedObjectPageState createState() => _SetIdentifiedObjectPageState();
+  _SetIdentifiedObjectPageState createState() =>
+      _SetIdentifiedObjectPageState();
 }
 
 class _SetIdentifiedObjectPageState extends State<SetIdentifiedObjectPage> {
@@ -28,7 +29,7 @@ class _SetIdentifiedObjectPageState extends State<SetIdentifiedObjectPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Set Identified Object'),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.transparent,
       ),
       body: Padding(
         padding: EdgeInsets.all(20),

@@ -52,8 +52,9 @@ class _ChatScreenState extends State<ChatScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              ExplainPage(identifiedObject: widget.identifiedObject), // Pass the identified object to ExplainPage
+          builder: (context) => ExplainPage(
+              identifiedObject: widget
+                  .identifiedObject), // Pass the identified object to ExplainPage
         ),
       );
     });
@@ -83,7 +84,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void sendMessage() async {
-    String identifiedObject = widget.identifiedObject; // Use the passed identified object
+    String identifiedObject =
+        widget.identifiedObject; // Use the passed identified object
     setState(() {
       isTyping = true;
       messages.add({'text': identifiedObject, 'sender': 'user'});
@@ -96,7 +98,8 @@ class _ChatScreenState extends State<ChatScreen> {
     final content = [Content.text(predefinedPrompt)];
     final model = GenerativeModel(
         model: 'gemini-1.5-flash',
-        apiKey: "AIzaSyD6O2MQ5yKAtAhRwMuxjE3-mR5BE2W-rkY"); // Use your actual API key
+        apiKey:
+            "AIzaSyD6O2MQ5yKAtAhRwMuxjE3-mR5BE2W-rkY"); // Use your actual API key
     final response = await model.generateContent(content);
 
     setState(() {
@@ -119,12 +122,12 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-    ' ${widget.identifiedObject}',
-    style: TextStyle(color: Colors.white), // Set the text color to white
-  ),
-         // Show the identified object at the top
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        
+          ' ${widget.identifiedObject}',
+          style: TextStyle(color: Colors.black), // Set the text color to white
+        ),
+        // Show the identified object at the top
+        backgroundColor: Colors.transparent,
+
         actions: [
           TextButton(
             onPressed: () {
@@ -135,7 +138,7 @@ class _ChatScreenState extends State<ChatScreen> {
             },
             child: Text(
               "Chat history",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
           ),
         ],
@@ -151,12 +154,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 final message = messages[messages.length - 1 - index];
                 final isUser = message['sender'] == 'user';
                 return Align(
-                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                  alignment:
+                      isUser ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     padding: EdgeInsets.all(15),
                     decoration: BoxDecoration(
-                      color: isUser ? Theme.of(context).colorScheme.primary : Colors.blueGrey[700],
+                      color: isUser
+                          ? Theme.of(context).colorScheme.primary
+                          : Colors.blueGrey[700],
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(

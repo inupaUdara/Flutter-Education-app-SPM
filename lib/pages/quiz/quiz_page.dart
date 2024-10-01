@@ -386,14 +386,16 @@ class _QuizPageState extends State<QuizPage> {
                           onPressed: _answered ? _nextQuestion : _checkAnswer,
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: Colors.blue,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                           child: Text(
                             _answered ? 'Next Question' : 'Submit Answer',
-                            style: const TextStyle(fontSize: 18),
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.white),
                           ),
                         ),
                         const SizedBox(height: 16),

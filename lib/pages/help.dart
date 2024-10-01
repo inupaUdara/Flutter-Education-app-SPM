@@ -106,7 +106,7 @@ class _HelpScreenState extends State<HelpScreen> {
               const SizedBox(height: 10),
               // _buildCommandList(),
               const Text(
-                "Please click on the download button to view voice command",
+                "You can click on voice button to give command. Please click on the download button to view voice command",
                 style: TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 20),

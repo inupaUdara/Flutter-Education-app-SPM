@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Home",
+          "HOME",
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -121,6 +121,13 @@ class _HomePageState extends State<HomePage> {
                   text: 'Saved Object',
                   onTap: () {
                     Navigator.pushNamed(context, '/display_shape_obj');
+                  },
+                ),
+                _buildNavigationCard(
+                  icon: Icons.quiz_outlined,
+                  text: 'Quiz',
+                  onTap: () {
+                    Navigator.pushNamed(context, '/quiz_page');
                   },
                 ),
                 _buildNavigationCard(
