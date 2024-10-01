@@ -132,7 +132,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     Icons.question_mark_rounded,
                     color: Theme.of(context).colorScheme.inversePrimary,
                   ),
-                  title: const Text("Add Quizzes"),
+                  title: const Text("ADD QUIZZES"),
                   onTap: () {
                     Navigator.pushNamed(context, '/add_quiz');
                   },

@@ -70,6 +70,36 @@ class DatabaseHelper {
         .map(_shapeListFromSnapshot);
   }
 
+  // Get unchecked shapes as a list
+  Future<List<ShapeModel>> getUncheckedShapes() async {
+    try {
+      QuerySnapshot snapshot = await shapeCollection
+          .where('uid', isEqualTo: user!.uid)
+          .where('completed', isEqualTo: false)
+          .get();
+
+      return _shapeListFromSnapshot(snapshot);
+    } catch (e) {
+      devtools.log("Error fetching unchecked shapes: $e");
+      throw Exception("Error fetching unchecked shapes");
+    }
+  }
+
+  // Get checked shapes as a list
+  Future<List<ShapeModel>> getCheckedShapes() async {
+    try {
+      QuerySnapshot snapshot = await shapeCollection
+          .where('uid', isEqualTo: user!.uid)
+          .where('completed', isEqualTo: true)
+          .get();
+
+      return _shapeListFromSnapshot(snapshot);
+    } catch (e) {
+      devtools.log("Error fetching checked shapes: $e");
+      throw Exception("Error fetching checked shapes");
+    }
+  }
+
   List<ShapeModel> _shapeListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return ShapeModel(

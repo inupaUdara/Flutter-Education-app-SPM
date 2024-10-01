@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spm_project/helper/genrate_report.dart';
 import 'package:spm_project/widget/checked_widget.dart';
 import 'package:spm_project/widget/unchecked_widget.dart';
 
@@ -34,112 +35,128 @@ class _DisplayShapesState extends State<DisplayShapes> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.calendar_month_sharp,
-              size: 35,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            onPressed: () async {
-              DateTime? pickedDate = await showDatePicker(
-                context: context,
-                initialDate: _selectedDate ?? DateTime.now(),
-                firstDate: DateTime(2000),
-                lastDate: DateTime
-                    .now(), // Prevent future dates by setting lastDate to today
-              );
-              if (pickedDate != null && pickedDate.isBefore(DateTime.now())) {
-                setState(() {
-                  _selectedDate = pickedDate;
-                });
-              }
-            },
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.calendar_month_sharp,
+                  size: 35,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: _selectedDate ?? DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime
+                        .now(), // Prevent future dates by setting lastDate to today
+                  );
+                  if (pickedDate != null &&
+                      pickedDate.isBefore(DateTime.now())) {
+                    setState(() {
+                      _selectedDate = pickedDate;
+                    });
+                  }
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.download_rounded,
+                    size: 35, color: Theme.of(context).colorScheme.primary),
+                onPressed: () async {
+                  await ReportGenerator().generateReport(context);
+                },
+              ),
+            ],
           ),
         ],
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: screenHeight * 0.02,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {
-                    setState(() {
-                      _buttonIndex = 0;
-                    });
-                  },
-                  child: Container(
-                    height: screenHeight * 0.065,
-                    width: MediaQuery.of(context).size.width / 2.2,
-                    decoration: BoxDecoration(
-                      color: _buttonIndex == 0
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Unchecked",
-                        style: TextStyle(
-                          fontSize: _buttonIndex == 0
-                              ? screenWidth * 0.040
-                              : screenWidth * 0.035,
-                          fontWeight: FontWeight.w500,
-                          color: _buttonIndex == 0
-                              ? Theme.of(context).colorScheme.surface
-                              : Theme.of(context).colorScheme.primary,
-                        ),
+      body: Column(
+        children: [
+          SizedBox(height: screenHeight * 0.02),
+          // Buttons outside SingleChildScrollView
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: () {
+                  setState(() {
+                    _buttonIndex = 0;
+                  });
+                },
+                child: Container(
+                  height: screenHeight * 0.065,
+                  width: MediaQuery.of(context).size.width / 2.2,
+                  decoration: BoxDecoration(
+                    color: _buttonIndex == 0
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.secondary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Unchecked",
+                      style: TextStyle(
+                        fontSize: _buttonIndex == 0
+                            ? screenWidth * 0.040
+                            : screenWidth * 0.035,
+                        fontWeight: FontWeight.w500,
+                        color: _buttonIndex == 0
+                            ? Theme.of(context).colorScheme.surface
+                            : Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),
                 ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {
-                    setState(() {
-                      _buttonIndex = 1;
-                    });
-                  },
-                  child: Container(
-                    height: screenHeight * 0.065,
-                    width: MediaQuery.of(context).size.width / 2.2,
-                    decoration: BoxDecoration(
-                      color: _buttonIndex == 1
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Checked",
-                        style: TextStyle(
-                          fontSize: _buttonIndex == 1
-                              ? screenWidth * 0.040
-                              : screenWidth * 0.035,
-                          fontWeight: FontWeight.w500,
-                          color: _buttonIndex == 1
-                              ? Theme.of(context).colorScheme.surface
-                              : Theme.of(context).colorScheme.primary,
-                        ),
+              ),
+              InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: () {
+                  setState(() {
+                    _buttonIndex = 1;
+                  });
+                },
+                child: Container(
+                  height: screenHeight * 0.065,
+                  width: MediaQuery.of(context).size.width / 2.2,
+                  decoration: BoxDecoration(
+                    color: _buttonIndex == 1
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.secondary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Checked",
+                      style: TextStyle(
+                        fontSize: _buttonIndex == 1
+                            ? screenWidth * 0.040
+                            : screenWidth * 0.035,
+                        fontWeight: FontWeight.w500,
+                        color: _buttonIndex == 1
+                            ? Theme.of(context).colorScheme.surface
+                            : Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),
                 ),
-              ],
+              ),
+            ],
+          ),
+          SizedBox(height: screenHeight * 0.03),
+          // The scrollable content
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _widgets[
+                      _buttonIndex], // Show either UncheckedWidget or CheckedWidget
+                ],
+              ),
             ),
-            SizedBox(
-              height: screenHeight * 0.03,
-            ),
-            _widgets[
-                _buttonIndex], // Show either UncheckedWidget or CheckedWidget
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

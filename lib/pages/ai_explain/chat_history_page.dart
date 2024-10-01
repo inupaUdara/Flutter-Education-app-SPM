@@ -8,7 +8,6 @@ import 'chat_data_store.dart';
 import 'chat_message.dart';
 import 'package:open_file/open_file.dart';
 
-
 class ChatHistoryPage extends StatefulWidget {
   @override
   _ChatHistoryPageState createState() => _ChatHistoryPageState();
@@ -69,56 +68,59 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
     );
   }
 
- Future<void> _downloadChatHistoryAsPDF() async {
-  final pdf = pw.Document();
-  final chatHistory = await ChatDataStore.getChatHistory();
+  Future<void> _downloadChatHistoryAsPDF() async {
+    final pdf = pw.Document();
+    final chatHistory = await ChatDataStore.getChatHistory();
 
-  pdf.addPage(
-    pw.MultiPage(
-      pageFormat: PdfPageFormat.a4,
-      margin: pw.EdgeInsets.all(32),
-      build: (pw.Context context) {
-        return [
-          pw.ListView.builder(
-            itemCount: chatHistory.length,
-            itemBuilder: (context, index) {
-              final chatMessage = chatHistory[index];
-              final formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(chatMessage.timestamp.toLocal());
-              return pw.Container(
-                margin: const pw.EdgeInsets.only(bottom: 8),
-                child: pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text(
-                      chatMessage.sender,
-                      style: pw.TextStyle(fontSize: 18, color: PdfColors.blue),
-                    ),
-                    pw.Text(
-                      chatMessage.message,
-                      style: pw.TextStyle(fontSize: 14),
-                    ),
-                    pw.Text(
-                      formattedDate,
-                      style: pw.TextStyle(fontSize: 10, color: PdfColors.grey),
-                    ),
-                    pw.Divider(),
-                  ],
-                ),
-              );
-            },
-          ),
-        ];
-      },
-    ),
-  );
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        margin: pw.EdgeInsets.all(32),
+        build: (pw.Context context) {
+          return [
+            pw.ListView.builder(
+              itemCount: chatHistory.length,
+              itemBuilder: (context, index) {
+                final chatMessage = chatHistory[index];
+                final formattedDate = DateFormat('yyyy-MM-dd HH:mm')
+                    .format(chatMessage.timestamp.toLocal());
+                return pw.Container(
+                  margin: const pw.EdgeInsets.only(bottom: 8),
+                  child: pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text(
+                        chatMessage.sender,
+                        style:
+                            pw.TextStyle(fontSize: 18, color: PdfColors.blue),
+                      ),
+                      pw.Text(
+                        chatMessage.message,
+                        style: pw.TextStyle(fontSize: 14),
+                      ),
+                      pw.Text(
+                        formattedDate,
+                        style:
+                            pw.TextStyle(fontSize: 10, color: PdfColors.grey),
+                      ),
+                      pw.Divider(),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ];
+        },
+      ),
+    );
 
-  try {
-    // Get the Downloads directory on Android
-    final directory = await getApplicationDocumentsDirectory();
+    try {
+      // Get the Downloads directory on Android
+      final directory = await getApplicationDocumentsDirectory();
       final file = File('${directory.path}/Chat_report.pdf');
       await file.writeAsBytes(await pdf.save());
 
-  showDialog(
+      showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('PDF Generated'),
@@ -140,8 +142,8 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
           ],
         ),
       );
-  } catch (e) {
-   showDialog(
+    } catch (e) {
+      showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Error'),
@@ -156,16 +158,18 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
           ],
         ),
       );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat History',style: TextStyle(color: Colors.white),),
-        
-         backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(
+          'Chat History',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: Icon(Icons.download),
@@ -174,7 +178,7 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
           ),
         ],
       ),
-        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
+      backgroundColor: const Color.fromARGB(255, 233, 233, 233),
       body: FutureBuilder<List<ChatMessage>>(
         future: _chatHistoryFuture,
         builder: (context, snapshot) {
@@ -201,14 +205,11 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
                 }
 
                 return Card(
-                  
                   margin: EdgeInsets.only(bottom: 12.0),
                   child: ListTile(
-                    
                     title: Text(
                       chatMessage.message,
                       style: TextStyle(color: messageColor, fontSize: 16),
-                      
                     ),
                     subtitle: Text(
                       '${chatMessage.sender} | ${DateFormat('yyyy-MM-dd HH:mm').format(chatMessage.timestamp.toLocal())}',

@@ -58,6 +58,7 @@ dependencies:
   flutter_spinkit: ^5.2.1
   vibration: ^2.0.0
   open_file: ^3.5.7
+  http: ^1.2.2
 
 
   

@@ -45,6 +45,17 @@ class _UncheckedWidgetState extends State<UncheckedWidget> {
                   shapeDate.day == widget.selectedDate!.day;
             }).toList();
           }
+          if (shapes.isEmpty) {
+            return Center(
+              child: Text(
+                "No Shape Found",
+                style: TextStyle(
+                  fontSize: screenWidth * 0.05,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            );
+          }
           return ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
