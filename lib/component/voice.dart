@@ -71,7 +71,7 @@ class _SpeechButtonState extends State<SpeechButton> {
     if (command.contains('home')) {
       Navigator.pushNamed(context, '/home_page');
       // _speak("Navigating to Home Page");
-    } else if (command.contains('maths')) {
+    } else if (command.contains('mathematics')) {
       Navigator.pushNamed(context, '/maths_obj');
       _speak("Navigating to Maths Object Page");
     } else if (command.contains('science')) {
