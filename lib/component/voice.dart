@@ -71,7 +71,7 @@ class _SpeechButtonState extends State<SpeechButton> {
     if (command.contains('home')) {
       Navigator.pushNamed(context, '/home_page');
       // _speak("Navigating to Home Page");
-    } else if (command.contains('maths')) {
+    } else if (command.contains('mathematics')) {
       Navigator.pushNamed(context, '/maths_obj');
       _speak("Navigating to Maths Object Page");
     } else if (command.contains('science')) {
@@ -89,10 +89,20 @@ class _SpeechButtonState extends State<SpeechButton> {
     } else if (command.contains('logout')) {
       logout(context);
       _speak("Logging out");
+    } else if (command.contains('quiz')) {
+      Navigator.pushNamed(context, '/quiz_page');
+      _speak("Navigating to Quiz Page");
+    } else if (command.contains('voice note')) {
+      Navigator.pushNamed(context, '/voice_note_page');
+      _speak("Navigating to voice note Page");
     } else if (command.contains('capture')) {
       widget.onCaptureCommand();
       _speak("Capturing the image");
+    } else if (command.contains('help')) {
+      Navigator.pushNamed(context, '/help_page');
+      _speak("Navigating to Help Page");
     }
+
     print(_command);
   }
 

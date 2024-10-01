@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -7,6 +8,7 @@ import 'dart:developer' as devtools;
 import 'package:spm_project/component/button.dart';
 import 'package:spm_project/component/voice.dart';
 import 'package:spm_project/helper/camera_helper.dart';
+import 'package:spm_project/helper/database_helper.dart';
 
 class CurrancyObj extends StatefulWidget {
   const CurrancyObj({super.key});
@@ -16,6 +18,9 @@ class CurrancyObj extends StatefulWidget {
 }
 
 class _CurrancyObjState extends State<CurrancyObj> {
+  User? user = FirebaseAuth.instance.currentUser;
+  late String uid;
+
   File? filePath;
   String label = '';
   double confidence = 0.0;
@@ -23,6 +28,7 @@ class _CurrancyObjState extends State<CurrancyObj> {
 
   final CameraHelper _cameraHelper = CameraHelper();
   final FlutterTts _flutterTts = FlutterTts();
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
 
   Future<void> _tfliteInit() async {
     String? res = await Tflite.loadModel(
@@ -55,6 +61,7 @@ class _CurrancyObjState extends State<CurrancyObj> {
     _cameraHelper.initializeCamera().then((_) {
       setState(() {}); // Rebuild the UI after camera initialization
     });
+    uid = FirebaseAuth.instance.currentUser!.uid;
   }
 
   @override
@@ -80,6 +87,7 @@ class _CurrancyObjState extends State<CurrancyObj> {
   Future<void> _captureImage() async {
     await _ensureModelIsLoaded();
     await _cameraHelper.captureImage(_updateImageFile, _updateLabel);
+    await _databaseHelper.saveDetectedShape(filePath, label);
 
     // Add a small delay to ensure label is updated before navigating
     //await Future.delayed(Duration(milliseconds: 2000));

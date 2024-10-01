@@ -51,8 +51,13 @@ dependencies:
   shared_preferences: ^2.0.15
   pdf: ^3.6.3
   path_provider: ^2.0.11
+  provider: ^6.1.2
   lottie: ^2.0.0
   google_generative_ai: ^0.4.4
+  flutter_slidable: ^3.1.1
+  flutter_spinkit: ^5.2.1
+  vibration: ^2.0.0
+  open_file: ^3.5.7
 
 
   
@@ -66,6 +71,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.11.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -109,3 +115,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"

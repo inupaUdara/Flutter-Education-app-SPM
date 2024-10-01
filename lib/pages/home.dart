@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "H O M E",
+          "Home",
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,

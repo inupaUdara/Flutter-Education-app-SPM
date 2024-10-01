@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
 import 'dart:developer' as devtools;
 import 'package:spm_project/component/button.dart';
 import 'package:spm_project/component/voice.dart';
 import 'package:spm_project/helper/camera_helper.dart';
+import 'package:spm_project/helper/database_helper.dart';
 import '../ai_explain/ChatScreen.dart'; // Import the ChatScreen to navigate to it
 
 class ScienceObj extends StatefulWidget {
@@ -16,12 +18,16 @@ class ScienceObj extends StatefulWidget {
 }
 
 class _ScienceObjState extends State<ScienceObj> {
+  User? user = FirebaseAuth.instance.currentUser;
+  late String uid;
+
   File? filePath;
   String label = '';
   double confidence = 0.0;
   bool _modelLoaded = false;
 
   final CameraHelper _cameraHelper = CameraHelper();
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
 
   Future<void> _tfliteInit() async {
     String? res = await Tflite.loadModel(
@@ -54,6 +60,7 @@ class _ScienceObjState extends State<ScienceObj> {
     _cameraHelper.initializeCamera().then((_) {
       setState(() {}); // Rebuild the UI after camera initialization
     });
+    uid = FirebaseAuth.instance.currentUser!.uid;
   }
 
   @override
@@ -95,9 +102,10 @@ class _ScienceObjState extends State<ScienceObj> {
   Future<void> _captureImage() async {
     await _ensureModelIsLoaded();
     await _cameraHelper.captureImage(_updateImageFile, _updateLabel);
+    await _databaseHelper.saveDetectedShape(filePath, label);
 
     // Add a small delay to ensure label is updated before navigating
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(Duration(milliseconds: 500));
 
     // Navigate to ChatScreen after the label is updated
     if (label.isNotEmpty) {
