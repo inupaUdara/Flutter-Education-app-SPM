@@ -6,6 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'chat_data_store.dart';
 import 'chat_message.dart';
+import 'package:open_file/open_file.dart';
+
 
 class ChatHistoryPage extends StatefulWidget {
   @override
@@ -112,22 +114,48 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
 
   try {
     // Get the Downloads directory on Android
-    final directory = await getExternalStorageDirectory();
-    final downloadsPath = "${directory!.parent.parent.parent.parent.path}/Download";
-    final file = File('$downloadsPath/chat_history.pdf');
+    final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/Chat_report.pdf');
+      await file.writeAsBytes(await pdf.save());
 
-    // Save the PDF file
-    await file.writeAsBytes(await pdf.save());
-
-    // Show a success message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Chat history saved as PDF at ${file.path}')),
-    );
+  showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('PDF Generated'),
+          content: Text('PDF report saved to ${file.path}'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                OpenFile.open(file.path);
+              },
+              child: const Text('Open'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        ),
+      );
   } catch (e) {
-    // Show an error message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Failed to save PDF: $e')),
-    );
+   showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: Text('Failed to save PDF: $e'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        ),
+      );
   }
 }
 
