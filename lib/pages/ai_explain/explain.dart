@@ -136,6 +136,19 @@ class _ExplainPageState extends State<ExplainPage> {
       _confidenceLevel = result.confidence;
     });
 
+       // Check if the user wants to go to specific pages
+  String spokenWords = _wordsSpoken.toLowerCase();
+
+  if (spokenWords.contains("go to home")) {
+    Navigator.pushReplacementNamed(context, '/home_page');
+  } else if (spokenWords.contains("go to maths object")) {
+    Navigator.pushReplacementNamed(context, '/maths_obj');
+  } else if (spokenWords.contains("go to science object")) {
+    Navigator.pushReplacementNamed(context, '/science_obj');
+  } else if (spokenWords.contains("go to currency")) {
+    Navigator.pushReplacementNamed(context, '/currancy_obj');
+  }
+
     _flutterTts.setCompletionHandler(() {
       setState(() {
         _isSpeaking = false; // Stop speaking animation
@@ -146,24 +159,29 @@ class _ExplainPageState extends State<ExplainPage> {
   @override
   Widget build(BuildContext context) {
   return Scaffold(
-    appBar: AppBar(
-      title: Text('Ask About ${widget.identifiedObject}'),
-      backgroundColor: Colors.blueAccent, // AppBar background color
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ChatHistoryPage()),
-            );
-          },
-          child: Text(
-            "Chat History",
-            style: TextStyle(color: Colors.white), // Text color for visibility
+   appBar: AppBar(
+        title: Text(
+    'Ask More',
+    style: TextStyle(color: Colors.white), // Set the text color to white
+  ),
+         // Show the identified object at the top
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ChatHistoryPage()),
+              );
+            },
+            child: Text(
+              "Chat history",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
-        ),
-      ],
-    ),
+        ],
+      ),
     backgroundColor: Colors.white, // Set the background color of the Scaffold
     body: Column(
       children: [
@@ -201,7 +219,7 @@ class _ExplainPageState extends State<ExplainPage> {
     onPressed: () => askMoreQuestions(_questionController.text),
     child: Text('Submit', style: TextStyle(color: Colors.white)), // Text color
     style: ElevatedButton.styleFrom(
-      backgroundColor: const Color.fromARGB(255, 34, 111, 244), // Button background color
+      backgroundColor: Theme.of(context).colorScheme.primary,// Button background color
     ),
   ),
 ),

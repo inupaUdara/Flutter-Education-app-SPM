@@ -118,8 +118,13 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Maths Object: ${widget.identifiedObject}'), // Show the identified object at the top
-        backgroundColor: Colors.blueAccent,
+        title: Text(
+    ' ${widget.identifiedObject}',
+    style: TextStyle(color: Colors.white), // Set the text color to white
+  ),
+         // Show the identified object at the top
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        
         actions: [
           TextButton(
             onPressed: () {
@@ -129,7 +134,7 @@ class _ChatScreenState extends State<ChatScreen> {
               );
             },
             child: Text(
-              "Go to chat history",
+              "Chat history",
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -151,7 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     padding: EdgeInsets.all(15),
                     decoration: BoxDecoration(
-                      color: isUser ? Colors.green : Colors.blueGrey[700],
+                      color: isUser ? Theme.of(context).colorScheme.primary : Colors.blueGrey[700],
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(

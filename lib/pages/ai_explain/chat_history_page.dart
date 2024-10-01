@@ -135,12 +135,14 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat History'),
-         backgroundColor: Colors.blueAccent, 
+        title: Text('Chat History',style: TextStyle(color: Colors.white),),
+        
+         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: Icon(Icons.download),
             onPressed: _downloadChatHistoryAsPDF,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ],
       ),
