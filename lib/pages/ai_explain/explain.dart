@@ -26,10 +26,9 @@ class _ExplainPageState extends State<ExplainPage> {
   String _wordsSpoken = "";
   double _confidenceLevel = 0;
   bool _isButtonPressed = false;
-   List<ChatMessage> chatHistory = [];
-   bool _isListening = false; // Track if it's listening
-  bool _isSpeaking = false;  // Track if it's speaking
-  
+  List<ChatMessage> chatHistory = [];
+  bool _isListening = false; // Track if it's listening
+  bool _isSpeaking = false; // Track if it's speaking
 
   @override
   void initState() {
@@ -39,7 +38,8 @@ class _ExplainPageState extends State<ExplainPage> {
     initSpeech();
 
     // Save identified object at the start of the chat
-    saveChatMessage('Identified object is: ${widget.identifiedObject}', 'System');
+    saveChatMessage(
+        'Identified object is: ${widget.identifiedObject}', 'System');
   }
 
   void initTTS() {
@@ -77,14 +77,15 @@ class _ExplainPageState extends State<ExplainPage> {
         "Provide a detailed and clear response suitable for text-to-speech. Don't use any symbols in the text output, just plain text.";
 
     final content = [Content.text(predefinedPrompt)];
-    final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: "AIzaSyD6O2MQ5yKAtAhRwMuxjE3-mR5BE2W-rkY");
+    final model = GenerativeModel(
+        model: 'gemini-1.5-flash',
+        apiKey: "AIzaSyD6O2MQ5yKAtAhRwMuxjE3-mR5BE2W-rkY");
     final response = await model.generateContent(content);
 
-
     String filteredResponseText = response.text!
-      .replaceAll('*', '')
-      .replaceAll('/', '')
-      .replaceAll('\n', ' ');
+        .replaceAll('*', '')
+        .replaceAll('/', '')
+        .replaceAll('\n', ' ');
 
     setState(() {
       responseText = filteredResponseText;
@@ -95,8 +96,6 @@ class _ExplainPageState extends State<ExplainPage> {
         timestamp: DateTime.now(),
       ));
     });
-
-
 
     saveChatMessage(responseText, 'AI');
 
@@ -137,19 +136,15 @@ class _ExplainPageState extends State<ExplainPage> {
       _confidenceLevel = result.confidence;
     });
 
- _flutterTts.setCompletionHandler(() {
+    _flutterTts.setCompletionHandler(() {
       setState(() {
         _isSpeaking = false; // Stop speaking animation
       });
     });
-
-
   }
 
-  
-
   @override
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
       title: Text('Ask About ${widget.identifiedObject}'),
@@ -269,30 +264,32 @@ class _ExplainPageState extends State<ExplainPage> {
   );
 }
 
-Widget _buildFloatingActionButtons() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.end,
-    children: [
-      SizedBox(width: 14),
-      if (responseText.isNotEmpty)
+  Widget _buildFloatingActionButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(width: 14),
+        if (responseText.isNotEmpty)
+          FloatingActionButton(
+            onPressed: () => _flutterTts.speak(responseText),
+            backgroundColor: Colors.blueAccent, // Set background color
+            foregroundColor: Colors.white, // Icon color
+            child: Icon(Icons.replay),
+          ),
+        SizedBox(width: 14),
         FloatingActionButton(
-          onPressed: () => _flutterTts.speak(responseText),
-          backgroundColor: Colors.blueAccent, // Set background color
+          onPressed: () {
+            _flutterTts.stop();
+            setState(() {
+              _isSpeaking =
+                  false; // Stop speaking animation when TTS is stopped
+            });
+          },
+          backgroundColor: Colors.red, // Set background color
           foregroundColor: Colors.white, // Icon color
-          child: Icon(Icons.replay),
+          child: Icon(Icons.stop),
         ),
-      SizedBox(width: 14),
-      FloatingActionButton(
-        onPressed: () {
-          _flutterTts.stop();
-          setState(() {
-            _isSpeaking = false; // Stop speaking animation when TTS is stopped
-          });
-        },
-        backgroundColor: Colors.red, // Set background color
-        foregroundColor: Colors.white, // Icon color
-        child: Icon(Icons.stop),
-      ),
-    ],
-  );
-}}
+      ],
+    );
+  }
+}
