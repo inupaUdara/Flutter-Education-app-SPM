@@ -89,6 +89,12 @@ class _SpeechButtonState extends State<SpeechButton> {
     } else if (command.contains('logout')) {
       logout(context);
       _speak("Logging out");
+    } else if (command.contains('quiz')) {
+      Navigator.pushNamed(context, '/quiz_page');
+      _speak("Navigating to Quiz Page");
+    } else if (command.contains('voice note')) {
+      Navigator.pushNamed(context, '/voice_note_page');
+      _speak("Navigating to voice note Page");
     } else if (command.contains('capture')) {
       widget.onCaptureCommand();
       _speak("Capturing the image");
@@ -96,6 +102,7 @@ class _SpeechButtonState extends State<SpeechButton> {
       Navigator.pushNamed(context, '/help_page');
       _speak("Navigating to Help Page");
     }
+
     print(_command);
   }
 

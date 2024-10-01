@@ -10,6 +10,9 @@ import 'package:spm_project/pages/objects_detection/display_shape.dart';
 import 'package:spm_project/pages/objects_detection/math_object.dart';
 import 'package:spm_project/pages/objects_detection/science_obj.dart';
 import 'package:spm_project/pages/profile.dart';
+import 'package:spm_project/pages/quiz/add_question_page.dart';
+import 'package:spm_project/pages/quiz/quiz_page.dart';
+import 'package:spm_project/pages/quiz/voice_notes_page.dart';
 import 'package:spm_project/theme/colors.dart';
 
 void main() async {
@@ -36,6 +39,9 @@ class MyApp extends StatelessWidget {
         '/currancy_obj': (context) => const CurrancyObj(),
         '/display_shape_obj': (context) => const DisplayShapes(),
         '/help_page': (context) => const HelpScreen(),
+        '/add_quiz': (context) => const AddQuestionPage(),
+        '/quiz_page': (context) => const QuizPage(),
+        '/voice_note_page': (context) => const VoiceNotesPage(),
       },
     );
   }

@@ -125,6 +125,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.question_mark_rounded,
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
+                  title: const Text("Add Quizzes"),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/add_quiz');
+                  },
+                ),
+              ),
+
             ],
           ),
         ],
