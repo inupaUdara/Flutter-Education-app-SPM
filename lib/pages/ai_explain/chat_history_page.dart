@@ -144,7 +144,7 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
           ),
         ],
       ),
-        backgroundColor: const Color.fromARGB(255, 101, 101, 101),
+        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
       body: FutureBuilder<List<ChatMessage>>(
         future: _chatHistoryFuture,
         builder: (context, snapshot) {
@@ -163,9 +163,9 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
                 final chatMessage = chatHistory[index];
                 Color messageColor;
                 if (chatMessage.sender == 'User') {
-                  messageColor = Colors.green;
+                  messageColor = const Color.fromARGB(255, 0, 138, 5);
                 } else if (chatMessage.sender == 'AI') {
-                  messageColor = Colors.blue;
+                  messageColor = const Color.fromARGB(255, 0, 81, 147);
                 } else {
                   messageColor = Colors.red;
                 }

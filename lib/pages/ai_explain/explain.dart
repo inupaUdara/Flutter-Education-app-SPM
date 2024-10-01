@@ -145,133 +145,124 @@ class _ExplainPageState extends State<ExplainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Ask About ${widget.identifiedObject}'),
-        backgroundColor: Colors.blueAccent, // AppBar background color
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ChatHistoryPage()),
-              );
-            },
-            child: Text(
-              "Chat History",
-              style:
-                  TextStyle(color: Colors.white), // Text color for visibility
-            ),
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('Ask About ${widget.identifiedObject}'),
+      backgroundColor: Colors.blueAccent, // AppBar background color
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatHistoryPage()),
+            );
+          },
+          child: Text(
+            "Chat History",
+            style: TextStyle(color: Colors.white), // Text color for visibility
           ),
-        ],
-      ),
-      backgroundColor: Colors.white, // Set the background color of the Scaffold
-      body: Column(
-        children: [
-          // Top half of the screen: text input and buttons
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  // Wrap the response text in a Flexible widget to avoid overflow
-                  if (responseText.isNotEmpty)
-                    Flexible(
-                      child: SingleChildScrollView(
-                        child: Text(
-                          '$responseText',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black87), // Text color
-                        ),
-                      ),
-                    ),
-                  SizedBox(height: 20),
-                  TextField(
-                    controller: _questionController,
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      labelText: 'Ask a question...',
-                      border: OutlineInputBorder(),
-                      labelStyle: TextStyle(
-                          color: const Color.fromARGB(
-                              255, 0, 53, 145)), // Label text color
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Visibility(
-                    visible:
-                        !isLoading, // Hide the button when isLoading is true
-                    child: ElevatedButton(
-                      onPressed: () =>
-                          askMoreQuestions(_questionController.text),
-                      child: Text('Submit',
-                          style: TextStyle(color: Colors.white)), // Text color
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                            255, 34, 111, 244), // Button background color
+        ),
+      ],
+    ),
+    backgroundColor: Colors.white, // Set the background color of the Scaffold
+    body: Column(
+      children: [
+        // Top half of the screen: text input and buttons
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // Wrap the response text in a Flexible widget to avoid overflow
+                if (responseText.isNotEmpty)
+                  Flexible(
+                    child: SingleChildScrollView(
+                      child: Text(
+                        '$responseText',
+                        style: TextStyle(fontSize: 16, color: Colors.black87), // Text color
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          // Bottom half of the screen: Gesture area for voice input
-          Expanded(
-            flex: 1,
-            child: GestureDetector(
-              onLongPress: () {
-                _flutterTts.stop(); // Stop the speech output
-                _startListening(); // Start listening for user input
-                setState(() {
-                  _isListening = true; // Listening animation starts
-                  _isSpeaking = false; // Ensure no speaking animation is active
-                });
-              },
-              onLongPressUp: () {
-                _stopListening();
-                setState(() {
-                  _isListening = false;
-                });
-              },
-              child: Container(
-                width: double.infinity,
-                color: Colors.white, // Container background color
-                child: Center(
-                  child: isLoading
-                      ? Lottie.network(
-                          'https://lottie.host/cc40834c-0b0e-4758-827e-06de2767ade5/2pNpN1FN8o.json', // Loading animation
-                          width: 200,
-                          height: 200,
-                        )
-                      : _isListening
-                          ? Lottie.network(
-                              'https://lottie.host/d6546831-1930-48d4-9e82-70fa2aeca5f9/8kIDv5qgMv.json', // Listening animation
-                              width: 300,
-                              height: 300,
-                            )
-                          : (_isSpeaking
-                              ? Lottie.network(
-                                  'https://lottie.host/0e504c43-7dae-4143-8ec4-622d1343fd4b/R88atFfg7q.json', // Speaking animation
-                                  width: 400,
-                                  height: 400,
-                                )
-                              : Icon(
-                                  Icons.mic_none,
-                                  size: 80,
-                                  color: const Color.fromARGB(
-                                      255, 1, 197, 24), // Icon color
-                                )),
+                SizedBox(height: 20),
+                TextField(
+                  controller: _questionController,
+                  style: TextStyle(color: Colors.black),
+                  decoration: InputDecoration(
+                    labelText: 'Ask a question...',
+                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(color: const Color.fromARGB(255, 0, 53, 145)), // Label text color
+                    
+                  ),
                 ),
+                SizedBox(height: 10),
+                Visibility(
+  visible: !isLoading, // Hide the button when isLoading is true
+  child: ElevatedButton(
+    onPressed: () => askMoreQuestions(_questionController.text),
+    child: Text('Submit', style: TextStyle(color: Colors.white)), // Text color
+    style: ElevatedButton.styleFrom(
+      backgroundColor: const Color.fromARGB(255, 34, 111, 244), // Button background color
+    ),
+  ),
+),
+              ],
+            ),
+          ),
+        ),
+        // Bottom half of the screen: Gesture area for voice input
+        Expanded(
+          flex: 1,
+          child: GestureDetector(
+            onLongPress: () {
+              _flutterTts.stop(); // Stop the speech output
+              _startListening(); // Start listening for user input
+              setState(() {
+                _isListening = true; // Listening animation starts
+                _isSpeaking = false; // Ensure no speaking animation is active
+              });
+            },
+            onLongPressUp: () {
+              _stopListening();
+              setState(() {
+                _isListening = false;
+              });
+            },
+            child: Container(
+              width: double.infinity,
+              color: Colors.white, // Container background color
+              child: Center(
+                child: isLoading
+                    ? Lottie.network(
+                        'https://lottie.host/cc40834c-0b0e-4758-827e-06de2767ade5/2pNpN1FN8o.json', // Loading animation
+                        width: 200,
+                        height: 200,
+                      )
+                    : _isListening
+                        ? Lottie.network(
+                            'https://lottie.host/d6546831-1930-48d4-9e82-70fa2aeca5f9/8kIDv5qgMv.json', // Listening animation
+                            width: 300,
+                            height: 300,
+                          )
+                        : (_isSpeaking
+                            ? Lottie.network(
+                                'https://lottie.host/0e504c43-7dae-4143-8ec4-622d1343fd4b/R88atFfg7q.json', // Speaking animation
+                                width: 400,
+                                height: 400,
+                              )
+                            : Icon(
+                                Icons.mic_none,
+                                size: 80,
+                                color: const Color.fromARGB(255, 1, 197, 24), // Icon color
+                              )),
               ),
             ),
           ),
-        ],
-      ),
-      floatingActionButton: _buildFloatingActionButtons(),
-    );
-  }
+        ),
+      ],
+    ),
+    floatingActionButton: _buildFloatingActionButtons(),
+  );
+}
 
   Widget _buildFloatingActionButtons() {
     return Row(
