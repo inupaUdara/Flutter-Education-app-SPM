@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:spm_project/auth/auth.dart';
 import 'package:spm_project/auth/loginOrRegister.dart';
 import 'package:spm_project/firebase_options.dart';
+import 'package:spm_project/pages/help.dart';
 import 'package:spm_project/pages/home.dart';
 import 'package:spm_project/pages/objects_detection/currency_obj.dart';
 import 'package:spm_project/pages/objects_detection/display_shape.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/science_obj': (context) => const ScienceObj(),
         '/currancy_obj': (context) => const CurrancyObj(),
         '/display_shape_obj': (context) => const DisplayShapes(),
+        '/help_page': (context) => const HelpScreen(),
       },
     );
   }

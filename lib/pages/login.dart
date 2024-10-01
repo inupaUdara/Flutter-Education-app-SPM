@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final storage = const FlutterSecureStorage();
   final LocalAuthentication auth = LocalAuthentication();
+  bool isPasswordVisible = false;
 
   Future<void> authenticateWithBiometrics() async {
     bool authenticated = false;
@@ -119,23 +120,35 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 CustomTextField(
                   hintText: "Password",
-                  obscureText: true,
+                  obscureText: !isPasswordVisible, // Toggle visibility
                   controller: passwordController,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isPasswordVisible = !isPasswordVisible;
+                      });
+                    },
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      "Forgot Password?",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    )
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     Text(
+                //       "Forgot Password?",
+                //       style: TextStyle(
+                //         color: Theme.of(context).colorScheme.secondary,
+                //       ),
+                //     )
+                //   ],
+                // ),
                 const SizedBox(
                   height: 25,
                 ),

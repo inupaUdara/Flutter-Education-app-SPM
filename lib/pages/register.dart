@@ -27,6 +27,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final LocalAuthentication auth = LocalAuthentication();
   final storage = const FlutterSecureStorage();
   bool _isBiometricAvailable = false;
+  bool isPasswordVisible = false;
+  bool isConfirmPasswordVisible = false;
 
   @override
   void initState() {
@@ -124,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (userCredential != null && userCredential.user != null) {
       await FirebaseFirestore.instance
           .collection("Users")
-          .doc(userCredential.user!.email)
+          .doc(userCredential.user!.uid)
           .set({
         'email': userCredential.user!.email,
         'username': usernameController.text,
@@ -170,18 +172,40 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 10,
                 ),
                 CustomTextField(
-                  hintText: "Password",
-                  obscureText: true,
-                  controller: passwordController,
-                ),
+                    hintText: "Password",
+                    obscureText: !isPasswordVisible,
+                    controller: passwordController,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
+                      },
+                    )),
                 const SizedBox(
                   height: 10,
                 ),
                 CustomTextField(
-                  hintText: "Confirm Password",
-                  obscureText: true,
-                  controller: confirmPwController,
-                ),
+                    hintText: "Confirm Password",
+                    obscureText: !isConfirmPasswordVisible,
+                    controller: confirmPwController,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isConfirmPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isConfirmPasswordVisible = !isConfirmPasswordVisible;
+                        });
+                      },
+                    )),
                 const SizedBox(
                   height: 25,
                 ),
