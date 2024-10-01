@@ -28,9 +28,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
           Column(
             children: [
               DrawerHeader(
-                child: Icon(
-                  Icons.favorite,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                child: Image.asset(
+                  'assets/logo.png',
+                  fit: BoxFit.cover,
                 ),
               ),
               const SizedBox(
@@ -138,7 +138,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                 ),
               ),
-
             ],
           ),
         ],

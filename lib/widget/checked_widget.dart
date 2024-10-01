@@ -5,7 +5,9 @@ import 'package:spm_project/helper/database_helper.dart';
 import 'package:spm_project/model/shape_model.dart';
 
 class CheckedWidget extends StatefulWidget {
-  const CheckedWidget({super.key});
+  final DateTime? selectedDate;
+
+  const CheckedWidget({super.key, this.selectedDate});
 
   @override
   State<CheckedWidget> createState() => _CheckedWidgetState();
@@ -34,6 +36,17 @@ class _CheckedWidgetState extends State<CheckedWidget> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<ShapeModel> shapes = snapshot.data!;
+
+          // Filter the shapes based on the selected date
+          if (widget.selectedDate != null) {
+            shapes = shapes.where((shape) {
+              final DateTime shapeDate = shape.timestamp.toDate();
+              return shapeDate.year == widget.selectedDate!.year &&
+                  shapeDate.month == widget.selectedDate!.month &&
+                  shapeDate.day == widget.selectedDate!.day;
+            }).toList();
+          }
+
           return ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),

@@ -11,13 +11,9 @@ class DisplayShapes extends StatefulWidget {
 
 class _DisplayShapesState extends State<DisplayShapes> {
   int _buttonIndex = 0;
+  DateTime? _selectedDate; // Store the selected date
 
-  final List<Widget> _widgets = [
-    //unchecked_widget.dart
-    const UncheckedWidget(),
-    //checked_widget.dart
-    const CheckedWidget(),
-  ];
+  final List<Widget> _widgets = [];
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +21,41 @@ class _DisplayShapesState extends State<DisplayShapes> {
     final screenHeight = screenSize.height;
     final screenWidth = screenSize.width;
 
+    // Initialize widgets with the selected date passed to both CheckedWidget and UncheckedWidget
+    final List<Widget> _widgets = [
+      UncheckedWidget(selectedDate: _selectedDate), // Pass selected date
+      CheckedWidget(selectedDate: _selectedDate), // Pass selected date
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("SAVED OBJECTS"),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.calendar_month_sharp,
+              size: 35,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            onPressed: () async {
+              DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: _selectedDate ?? DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime
+                    .now(), // Prevent future dates by setting lastDate to today
+              );
+              if (pickedDate != null && pickedDate.isBefore(DateTime.now())) {
+                setState(() {
+                  _selectedDate = pickedDate;
+                });
+              }
+            },
+          ),
+        ],
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
@@ -111,7 +136,8 @@ class _DisplayShapesState extends State<DisplayShapes> {
             SizedBox(
               height: screenHeight * 0.03,
             ),
-            _widgets[_buttonIndex],
+            _widgets[
+                _buttonIndex], // Show either UncheckedWidget or CheckedWidget
           ],
         ),
       ),

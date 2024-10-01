@@ -105,7 +105,7 @@ class _ScienceObjState extends State<ScienceObj> {
     await _databaseHelper.saveDetectedShape(filePath, label);
 
     // Add a small delay to ensure label is updated before navigating
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(Duration(milliseconds: 300));
 
     // Navigate to ChatScreen after the label is updated
     if (label.isNotEmpty) {
