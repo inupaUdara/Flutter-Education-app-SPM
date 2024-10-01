@@ -6,7 +6,9 @@ import 'package:spm_project/auth/auth.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 class SpeechButton extends StatefulWidget {
-  const SpeechButton({super.key});
+  final VoidCallback onCaptureCommand;
+
+  const SpeechButton({super.key, required this.onCaptureCommand});
 
   @override
   State<SpeechButton> createState() => _SpeechButtonState();
@@ -69,7 +71,7 @@ class _SpeechButtonState extends State<SpeechButton> {
     if (command.contains('home')) {
       Navigator.pushNamed(context, '/home_page');
       // _speak("Navigating to Home Page");
-    } else if (command.contains('math')) {
+    } else if (command.contains('maths')) {
       Navigator.pushNamed(context, '/maths_obj');
       _speak("Navigating to Maths Object Page");
     } else if (command.contains('science')) {
@@ -87,6 +89,9 @@ class _SpeechButtonState extends State<SpeechButton> {
     } else if (command.contains('logout')) {
       logout(context);
       _speak("Logging out");
+    } else if (command.contains('capture')) {
+      widget.onCaptureCommand();
+      _speak("Capturing the image");
     }
     print(_command);
   }

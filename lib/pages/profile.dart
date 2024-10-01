@@ -282,7 +282,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           style: TextStyle(color: Colors.redAccent),
                         ),
                       ),
-                      const SpeechButton()
+                      SpeechButton(onCaptureCommand: () {}),
                     ],
                   ),
                 ),

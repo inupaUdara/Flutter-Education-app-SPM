@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
 import 'dart:developer' as devtools;
 import 'package:spm_project/component/button.dart';
+import 'package:spm_project/component/voice.dart';
 import 'package:spm_project/helper/camera_helper.dart';
 import '../ai_explain/ChatScreen.dart'; // Import the ChatScreen to navigate to it
 
@@ -91,6 +92,23 @@ class _MathsObjState extends State<MathsObj> {
     }
   }
 
+  Future<void> _captureImage() async {
+    await _ensureModelIsLoaded();
+    await _cameraHelper.captureImage(_updateImageFile, _updateLabel);
+
+    // Add a small delay to ensure label is updated before navigating
+    await Future.delayed(Duration(milliseconds: 1000));
+
+    // Navigate to ChatScreen after the label is updated
+    if (label.isNotEmpty) {
+      _navigateToChatScreen();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No object detected yet!')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -98,7 +116,6 @@ class _MathsObjState extends State<MathsObj> {
     final screenWidth = screenSize.width;
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text("MATHS OBJECTS"),
         centerTitle: true,
@@ -136,15 +153,12 @@ class _MathsObjState extends State<MathsObj> {
               SizedBox(height: screenHeight * 0.01),
               CustomButton(
                 ontap: () async {
-                  await _ensureModelIsLoaded();
-                  await _cameraHelper.captureImage(
-                      _updateImageFile, _updateLabel);
-
-                  // Navigate to ChatScreen after object is detected
-                  _navigateToChatScreen();
+                  await _captureImage();
                 },
-                text: "Capture and Identify",
+                text: "Identify",
               ),
+              SizedBox(height: screenHeight * 0.01),
+              SpeechButton(onCaptureCommand: _captureImage),
             ],
           ),
         ),

@@ -67,7 +67,9 @@ class _HomePageState extends State<HomePage> {
         // iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
       ),
       drawer: const CustomDrawer(),
-      body: const SpeechButton(),
+      body: SpeechButton(
+        onCaptureCommand: () {},
+      ),
     );
   }
 }
