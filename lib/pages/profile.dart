@@ -145,19 +145,36 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> deleteProfile(BuildContext context) async {
     try {
+      // Re-authenticate the user before deleting
+      String email = currentUser!.email!;
+      String password = await _storage.read(key: "password") ??
+          ''; // Stored password for re-authentication
+
+      AuthCredential credential =
+          EmailAuthProvider.credential(email: email, password: password);
+      await currentUser!.reauthenticateWithCredential(credential);
+
+      // Delete user document from Firestore
       await FirebaseFirestore.instance
           .collection("Users")
           .doc(currentUser!.uid)
           .delete();
 
+      // Delete user from Firebase Authentication
       await currentUser!.delete();
 
       await FirebaseAuth.instance.signOut();
+
+      // Navigate back to login/register page after deletion
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginOrRegister()),
       );
     } catch (e) {
-      print(e.toString());
+      print("Error deleting account: $e");
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error deleting account: $e")),
+      );
     }
   }
 
