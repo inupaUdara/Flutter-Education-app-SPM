@@ -6,6 +6,7 @@ import 'chat_data_store.dart';
 import 'chat_message.dart';
 import 'chat_history_page.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ExplainPage extends StatefulWidget {
   final String identifiedObject;
@@ -79,7 +80,8 @@ class _ExplainPageState extends State<ExplainPage> {
     final content = [Content.text(predefinedPrompt)];
     final model = GenerativeModel(
         model: 'gemini-1.5-flash',
-        apiKey: "AIzaSyD6O2MQ5yKAtAhRwMuxjE3-mR5BE2W-rkY");
+         apiKey: dotenv.env['API_KEY']! 
+);
     final response = await model.generateContent(content);
 
     String filteredResponseText = response.text!

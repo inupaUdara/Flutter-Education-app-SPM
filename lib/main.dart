@@ -14,10 +14,12 @@ import 'package:spm_project/pages/quiz/add_question_page.dart';
 import 'package:spm_project/pages/quiz/quiz_page.dart';
 import 'package:spm_project/pages/quiz/voice_notes_page.dart';
 import 'package:spm_project/theme/colors.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 

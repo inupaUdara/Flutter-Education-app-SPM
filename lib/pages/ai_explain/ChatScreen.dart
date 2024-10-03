@@ -4,6 +4,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:lottie/lottie.dart'; // Import Lottie for animation
 import 'explain.dart'; // Import the ExplainPage
 import 'chat_history_page.dart'; // Import the ChatHistoryPage
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChatScreen extends StatefulWidget {
   final String identifiedObject; // Add identifiedObject as a parameter
@@ -98,8 +99,8 @@ class _ChatScreenState extends State<ChatScreen> {
     final content = [Content.text(predefinedPrompt)];
     final model = GenerativeModel(
         model: 'gemini-1.5-flash',
-        apiKey:
-            "AIzaSyD6O2MQ5yKAtAhRwMuxjE3-mR5BE2W-rkY"); // Use your actual API key
+        apiKey: dotenv.env['API_KEY']! // Fetch API key from the .env file
+);
     final response = await model.generateContent(content);
 
     setState(() {
@@ -184,12 +185,10 @@ class _ChatScreenState extends State<ChatScreen> {
               width: 400,
               height: 400,
             ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: isTyping
-                ? CircularProgressIndicator() // Show loading while typing
-                : SizedBox.shrink(),
-          ),
+        Padding(
+  padding: const EdgeInsets.all(8.0),
+  child: isTyping ? CircularProgressIndicator() : SizedBox.shrink(),
+),
         ],
       ),
     );
