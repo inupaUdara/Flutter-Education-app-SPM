@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserdetails() async {
     return await FirebaseFirestore.instance
         .collection("Users")
-        .doc(currentUser!.email)
+        .doc(currentUser!.uid)
         .get();
   }
 
@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
     try {
       await FirebaseFirestore.instance
           .collection("Users")
-          .doc(currentUser!.email)
+          .doc(currentUser!.uid)
           .update({"username": username});
       await _storage.write(key: "username", value: username);
     } catch (e) {
@@ -64,7 +64,13 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 
       // Temporarily store the new email before verification
-      await _storage.write(key: "newEmail", value: newEmail);
+      // await _storage.write(key: "newEmail", value: newEmail);
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(currentUser!.uid)
+          .update({"email": newEmail});
+
+      await _storage.write(key: "email", value: newEmail);
 
       // Inform user to return after verifying
       ScaffoldMessenger.of(context).showSnackBar(
@@ -73,82 +79,60 @@ class _ProfilePageState extends State<ProfilePage> {
               "Please return to the app after verifying your new email to complete the update."),
         ),
       );
-      FirebaseAuth.instance.authStateChanges().listen((user) async {
-        if (user != null) {
-          // Reload the user to ensure the latest status (email verification)
-          await user.reload();
-          if (user.emailVerified) {
-            // Update the email in Firestore after email verification
-            await updateEmailInFirestore(context);
-          }
-        }
-      });
+
+      // Update the email in Firestore after email verification
+      // await updateEmailInFirestore(context);
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text("Email updated successfully in Firestore!")),
       );
     } catch (e) {
       print(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to send verification: ${e.toString()}")),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text("Failed to send verification: ${e.toString()}")),
+      // );
     }
   }
 
-  Future<void> updateEmailInFirestore(BuildContext context) async {
-    try {
-      // Reload the current user to ensure emailVerified is updated
-      await currentUser!.reload();
-      User? updatedUser = FirebaseAuth.instance.currentUser;
+  // Future<void> updateEmailInFirestore(BuildContext context) async {
+  //   try {
+  //     // Reload the current user to ensure emailVerified is updated
+  //     await currentUser!.reload();
+  //     User? updatedUser = FirebaseAuth.instance.currentUser;
 
-      // Check if the email has been verified
-      if (updatedUser != null && updatedUser.emailVerified) {
-        final String? newEmail = await _storage.read(key: "newEmail");
+  //     // Check if the email has been verified
+  //     if (updatedUser != null && updatedUser.emailVerified) {
+  //       final String? newEmail = await _storage.read(key: "newEmail");
 
-        if (newEmail != null) {
-          // Update the email in Firestore
-          await FirebaseFirestore.instance
-              .collection("Users")
-              .doc(currentUser!.email)
-              .update({"email": newEmail});
+  //       if (newEmail != null) {
+  //         // Update the email in Firestore
+  //         await FirebaseFirestore.instance
+  //             .collection("Users")
+  //             .doc(currentUser!.email)
+  //             .update({"email": newEmail});
 
-          // Update the email in secure storage
-          await _storage.write(key: "email", value: newEmail);
-          await _storage.delete(key: "newEmail");
+  //         // Update the email in secure storage
+  //         await _storage.write(key: "email", value: newEmail);
+  //         await _storage.delete(key: "newEmail");
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text("Email updated successfully in Firestore!")),
-          );
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Email is not verified yet!")),
-        );
-      }
-    } catch (e) {
-      print("Failed to update email in Firestore: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to update email in Firestore: $e")),
-      );
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // FirebaseAuth.instance.authStateChanges().listen((user) async {
-    //   if (user != null) {
-    //     // Reload the user to ensure the latest status (email verification)
-    //     await user.reload();
-    //     if (user.emailVerified) {
-    //       // Update the email in Firestore after email verification
-    //       await updateEmailInFirestore(context);
-    //     }
-    //   }
-    // });
-  }
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           const SnackBar(
+  //               content: Text("Email updated successfully in Firestore!")),
+  //         );
+  //       }
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text("Email is not verified yet!")),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     print("Failed to update email in Firestore: $e");
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text("Failed to update email in Firestore: $e")),
+  //     );
+  //   }
+  // }
 
   Future<void> updatePassword(String newPassword) async {
     try {
@@ -161,19 +145,36 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> deleteProfile(BuildContext context) async {
     try {
+      // Re-authenticate the user before deleting
+      String email = currentUser!.email!;
+      String password = await _storage.read(key: "password") ??
+          ''; // Stored password for re-authentication
+
+      AuthCredential credential =
+          EmailAuthProvider.credential(email: email, password: password);
+      await currentUser!.reauthenticateWithCredential(credential);
+
+      // Delete user document from Firestore
       await FirebaseFirestore.instance
           .collection("Users")
-          .doc(currentUser!.email)
+          .doc(currentUser!.uid)
           .delete();
 
+      // Delete user from Firebase Authentication
       await currentUser!.delete();
 
       await FirebaseAuth.instance.signOut();
+
+      // Navigate back to login/register page after deletion
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginOrRegister()),
+        MaterialPageRoute(builder: (context) => const LoginOrRegister()),
       );
     } catch (e) {
-      print(e.toString());
+      print("Error deleting account: $e");
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error deleting account: $e")),
+      );
     }
   }
 
@@ -198,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         future: getUserdetails(),
         builder: (context, snapshot) {
@@ -276,13 +277,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: ElevatedButton.styleFrom(
                             elevation: 0,
                             backgroundColor:
-                                Theme.of(context).colorScheme.background),
+                                Theme.of(context).colorScheme.surface),
                         child: const Text(
                           "Delete Profile",
                           style: TextStyle(color: Colors.redAccent),
                         ),
                       ),
-                      SpeechButton()
+                      SpeechButton(onCaptureCommand: () {}),
                     ],
                   ),
                 ),

@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   FlutterTts flutterTts = FlutterTts();
-  String username = '';
+  String username = 'User';
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       if (currentUser != null) {
         DocumentSnapshot userDoc = await FirebaseFirestore.instance
             .collection('Users')
-            .doc(currentUser.email)
+            .doc(currentUser.uid)
             .get();
 
         if (userDoc.exists) {
@@ -59,15 +59,130 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "H O M E",
+          "HOME",
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
       ),
-      drawer: CustomDrawer(),
-      body: SpeechButton(),
+      drawer: const CustomDrawer(),
+      body: Column(
+        children: [
+          // Display the username at the top
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              "Hi $username!!",
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          // Card grid view
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 2,
+              padding: const EdgeInsets.all(16.0),
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              children: [
+                _buildNavigationCard(
+                  icon: Icons.person,
+                  text: 'Profile',
+                  onTap: () {
+                    Navigator.pushNamed(context, '/profile_page');
+                  },
+                ),
+                _buildNavigationCard(
+                  icon: Icons.calculate,
+                  text: 'Maths',
+                  onTap: () {
+                    Navigator.pushNamed(context, '/maths_obj');
+                  },
+                ),
+                _buildNavigationCard(
+                  icon: Icons.science,
+                  text: 'Science',
+                  onTap: () {
+                    Navigator.pushNamed(context, '/science_obj');
+                  },
+                ),
+                _buildNavigationCard(
+                  icon: Icons.attach_money,
+                  text: 'Currancy',
+                  onTap: () {
+                    Navigator.pushNamed(context, '/currancy_obj');
+                  },
+                ),
+                _buildNavigationCard(
+                  icon: Icons.save_alt,
+                  text: 'Saved Object',
+                  onTap: () {
+                    Navigator.pushNamed(context, '/display_shape_obj');
+                  },
+                ),
+                _buildNavigationCard(
+                  icon: Icons.quiz_outlined,
+                  text: 'Quiz',
+                  onTap: () {
+                    Navigator.pushNamed(context, '/quiz_page');
+                  },
+                ),
+                _buildNavigationCard(
+                  icon: Icons.help,
+                  text: 'Help',
+                  onTap: () {
+                    Navigator.pushNamed(context, '/help_page');
+                  },
+                ),
+              ],
+            ),
+          ),
+          SpeechButton(
+            onCaptureCommand: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Helper method to build the navigation cards
+  Widget _buildNavigationCard({
+    required IconData icon,
+    required String text,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        // height: 50,
+        child: Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 50,
+                color: Theme.of(context).primaryColor,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

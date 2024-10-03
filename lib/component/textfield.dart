@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final Color hintColor; // Color for the hint text
   final Color focusedBorderColor; // Color for the focused border
   final Color enabledBorderColor; // Color for the enabled border
+  final Widget? suffixIcon; // Suffix icon for showing/hiding password
 
   const CustomTextField({
     super.key,
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget {
     this.hintColor = const Color(0xFF1F276F), // Default hint color
     this.focusedBorderColor = Colors.blue, // Default focused border color
     this.enabledBorderColor = Colors.grey, // Default enabled border color
+    this.suffixIcon, // Add the suffixIcon parameter
   });
 
   @override
@@ -36,7 +38,8 @@ class CustomTextField extends StatelessWidget {
         hintStyle: TextStyle(color: hintColor), // Hint text color
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.white), // Enabled border color
+          borderSide:
+              const BorderSide(color: Colors.white), // Enabled border color
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -45,9 +48,10 @@ class CustomTextField extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide:
-              BorderSide(color: Color(0xFFC1E3FD)), // Enabled border color
+          borderSide: const BorderSide(
+              color: Color(0xFFC1E3FD)), // Enabled border color
         ),
+        suffixIcon: suffixIcon, // Add the suffixIcon widget
       ),
     );
   }
