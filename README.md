@@ -1,6 +1,6 @@
 <p align="center">
   <a href="">
-    <img src="[https://diegolaballos.com/files/images/flutter-icon.jpg](https://firebasestorage.googleapis.com/v0/b/spm-app-e91be.appspot.com/o/with%20bg%404x.png?alt=media&token=81ba580a-905a-4ea1-874d-248acfde9d6c)" alt="Logo" width=72 height=72>
+    <img src="https://diegolaballos.com/files/images/flutter-icon.jpg](https://firebasestorage.googleapis.com/v0/b/spm-app-e91be.appspot.com/o/with%20bg%404x.png?alt=media&token=81ba580a-905a-4ea1-874d-248acfde9d6c" alt="Logo" width=72 height=72>
   </a>
 
   <h3 align="center">Flutter Example App</h3>
