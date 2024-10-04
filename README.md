@@ -3,17 +3,14 @@
     <img src="https://firebasestorage.googleapis.com/v0/b/spm-app-e91be.appspot.com/o/with%20bg%404x.png?alt=media&token=81ba580a-905a-4ea1-874d-248acfde9d6c" alt="Logo" width=72 height=72>
   </a>
 
-  <h3 align="center">Flutter Example App</h3>
+  <h3 align="center">Flutter Educational App for Visually Impaired Students</h3>
 
   <p align="center">
-    Example app with Flutter that uses Firebase
+    LearnMate is a mobile application with Flutter that is dsigned to help visually impaired students' study independently by allowing them to interact with educational content on their own.
     <br>
-    Base project made with much  :heart: . Contains CRUD, patterns, and much more!
+    This app made with voice navigations & commands, object detection, AI chat bot and the educational quizes using voice . Contains CRUD, and much more!
     <br>
     <br>
-    <a href="https://github.com/Ismaestro/flutter-example-app/issues/new">Report bug</a>
-    ·
-    <a href="https://github.com/Ismaestro/flutter-example-app/issues/new">Request feature</a>
   </p>
 </p>
 
@@ -26,32 +23,57 @@
 
 ## Quick start
 
-This is a normal flutter app. You should follow the instructions in the [official documentation](https://flutter.io/docs/get-started/install).
+This is a flutter app. You should follow the instructions in the [official documentation](https://flutter.io/docs/get-started/install).
+
+### First Run
+
+After installing the package dependencies with 
+
+```
+flutter pub get
+```
+
+run the code generation tool 
+
+```
+flutter run
+```
 
 ## What's included
 
-* CRUD: create, update and remove heroes with Firebase!
-* Search bar, to look for heroes
-* Internationalization 
-* Responsive layout
-* [Sentry](https://sentry.io)! (logs any error in the app)
-* Google Tag Manager
-* Unit tests including code coverage
-* Integration tests
-* CI with Travis
-* Changelog generation
-* Following the [best practices](https://angular.io/guide/styleguide)!
+* CRUD: create, update and remove with Firebase!
+* User ogin and register with fingerprint
+* User profile management
+* Voice navigation, commnads and feedbacks
+* Maths object detection
+* Science object Detection
+* Currency Detection
+* AI chat bot with voice feedbacks and chat hostory
+* User voice based educational quizes 
 
 ### Firebase
 
 This repo is using Firebase. We use Cloud Firestore and Cloud Storage to handle CRUD operations over the heroes and to store their images.
 
+<div  align="center">
+
 ## Creators
+Contributors to make LearnMate successful.<br><br>
+<a href="https://www.linkedin.com/in/inupa-udara-02444728a/"><img src="https://avatars.githubusercontent.com/u/127815279?v=4" alt="Inupa" title="Inupa" width="70" height="70"/></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/yasindu-balasooriya-56138a229/"><img src="https://avatars.githubusercontent.com/u/124476484?v=4" alt="Yasindu" title="Yasindu" width="70" height="70"/></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/tharindu-sandeepa99/"><img src="https://avatars.githubusercontent.com/u/127717448?v=4" alt="Chathumina" title="Chathumina" width="70" height="70"/></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/ridma-sathsara-1700ba258/"><img src="https://avatars.githubusercontent.com/u/158838958?v=4" alt="Chamindu" title="Chamindu" width="70" height="70"/></a>
 
-**Ismael Ramos**
+<a href="https://www.linkedin.com/in/inupa-udara-02444728a/">Inupa Udara</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/yasindu-balasooriya-56138a229/">Yasindu Balasooriya</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/tharindu-sandeepa99/">Tharindu Sandeepa</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/ridma-sathsara-1700ba258/">Ridma Sathsara</a>
 
-- <https://github.com/ismaestro>
+</div>
 
-<a href='https://ko-fi.com/S6S5LMVR' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi4.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 
 
